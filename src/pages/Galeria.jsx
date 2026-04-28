@@ -33,7 +33,7 @@ function ProjectModal({ projeto, selectedIndex, total, onClose, onPrev, onNext }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useCallback(() => { setActiveImg(0); imageRefs.current = []; }, [projeto.id]);
  
-    useState(() => {
+    useEffect(() => {
         const handleKey = (e) => {
             if (e.key === "Escape") onClose();
             if (e.key === "ArrowLeft") onPrev();
@@ -42,7 +42,7 @@ function ProjectModal({ projeto, selectedIndex, total, onClose, onPrev, onNext }
         window.addEventListener("keydown", handleKey);
         document.body.style.overflow = "hidden";
         return () => { window.removeEventListener("keydown", handleKey); document.body.style.overflow = ""; };
-    }, []);
+    }, [onClose, onPrev, onNext]);
  
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 lg:p-8" onClick={onClose}>
