@@ -1,5 +1,6 @@
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import { Link } from 'react-router-dom'
 // eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion'
 import { GoShieldCheck } from 'react-icons/go'
@@ -266,18 +267,18 @@ export default function SobreNos() {
                                 Fale connosco — sem compromisso. Respondemos em menos de 24 horas.
                             </p>
                             <div className="flex flex-wrap justify-center gap-4">
-                                <a
-                                    href="/orcamento"
+                                <Link
+                                    to="/orcamento"
                                     className="px-8 py-3.5 bg-golden hover:bg-golden/90 text-[#0a0a0c] font-bold text-sm uppercase tracking-wide transition-colors duration-300"
                                 >
                                     Pedir Orçamento
-                                </a>
-                                <a
-                                    href="/contactos"
+                                </Link>
+                                <Link
+                                    to="/contactos"
                                     className="px-8 py-3.5 border border-white/30 hover:border-white text-white font-semibold text-sm uppercase tracking-wide transition-colors duration-300"
                                 >
                                     Contactar
-                                </a>
+                                </Link>
                             </div>
                         </motion.div>
                     </div>

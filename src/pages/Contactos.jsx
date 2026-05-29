@@ -1,5 +1,6 @@
 import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
+import { Link } from "react-router-dom"
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion"
 import { MdOutlineEmail } from "react-icons/md"
@@ -152,13 +153,13 @@ export default function Contactos() {
               </p>
 
               <div className="flex items-center justify-between gap-4">
-                <a
-                  href="/orcamento"
+                <Link
+                  to="/orcamento"
                   className="group inline-flex items-center gap-3 bg-golden text-zinc-900 px-6 py-4 font-bold text-sm uppercase tracking-wider hover:bg-white transition-colors duration-200"
                 >
                   Enviar Mensagem
                   <HiArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
-                </a>
+                </Link>
                 
                 <img 
                   src={SysloboLogo} 

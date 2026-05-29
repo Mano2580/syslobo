@@ -1,5 +1,6 @@
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { Link } from 'react-router-dom';
 import { useState, useCallback, useRef, useEffect } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
@@ -287,9 +288,9 @@ export default function GaleriaPage() {
                             </p>
                         </div>
                         <div className="flex flex-col sm:flex-row gap-4 shrink-0 w-full lg:w-auto">
-                            <a href="/contacto" className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-sm bg-dark-golden text-zinc-900 font-bold text-sm uppercase tracking-wider hover:bg-amber-400 transition-colors duration-200">
+                            <Link to="/contactos" className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-sm bg-dark-golden text-zinc-900 font-bold text-sm uppercase tracking-wider hover:bg-amber-400 transition-colors duration-200">
                                 Pedir orçamento
-                            </a>
+                            </Link>
                         </div>
                     </div>
                     <div className="mt-16 pt-10 border-t border-zinc-800/80 flex flex-wrap gap-x-8 gap-y-4">
