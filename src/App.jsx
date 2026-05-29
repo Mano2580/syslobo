@@ -16,7 +16,7 @@ function ScrollToTop() {
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/syslobo">
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />
