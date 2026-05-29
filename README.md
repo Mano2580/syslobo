@@ -1,18 +1,21 @@
-# React + Vite
+# Updating the Live Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Whenever you make changes to the source code, follow these two steps to push the updates to the live GitHub Pages site.
 
-Currently, two official plugins are available:
+### 1. Save Your Source Code
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Always commit and push your raw code to your primary branch (e.g., `main`) to keep a safe backup:
 
-## React Compiler
+```bash
+git add .
+git commit -m "Describe your updates here"
+git push origin main
+```
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+### 2. Redeploy the Site
 
-Note: This will impact Vite dev & build performances.
+Run the deploy script. This will automatically build the newest version of your app and push it to the `gh-pages` branch:
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+npm run deploy
+```
