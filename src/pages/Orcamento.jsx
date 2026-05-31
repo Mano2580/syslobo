@@ -9,13 +9,13 @@ import { GoClock } from 'react-icons/go'
 import { SlLocationPin } from 'react-icons/sl'
  
 const servicos = [
-    { value: "portas",     label: "Portas",               subtypes: ["Portas de Abrir", "Portas de Correr", "Portas de Enrolar", "Portas de Vaivém"] },
-    { value: "janelas",    label: "Janelas",              subtypes: ["Janelas de Abrir", "Janelas de Correr", "Janelas Fixas", "Janelas de Guilhotina"] },
-    { value: "portoes",    label: "Portões",              subtypes: ["Portão de Batente", "Portão de Correr", "Portão Automático"] },
-    { value: "estores",    label: "Estores",              subtypes: ["Estore de Rolo", "Estore Veneziano", "Estore Exterior"] },
-    { value: "grades",     label: "Grades de Segurança",  subtypes: ["Grades Fixas", "Grades Amovíveis", "Grades com Porta"] },
-    { value: "estruturas", label: "Estruturas Metálicas", subtypes: ["Cobertura", "Escadas", "Corrimão", "Estrutura Industrial"] },
-    { value: "outro",      label: "Outro",                subtypes: [] },
+    { value: "portas",     label: "Portas",     subtypes: ["Portas de Abrir", "Portas de Correr", "Portas de Enrolar", "Portas de Vaivém"] },
+    { value: "janelas",    label: "Janelas",    subtypes: ["Janelas de Abrir", "Janelas de Correr", "Janelas Fixas", "Janelas de Guilhotina"] },
+    { value: "portoes",    label: "Portões",    subtypes: ["Portão de Batente", "Portão de Correr", "Portão Automático"] },
+    { value: "grades",     label: "Grades",     subtypes: ["Grades Fixas", "Grades Amovíveis", "Grades com Porta"] },
+    { value: "fachadas",   label: "Fachadas",   subtypes: ["Fachada Ventilada", "Revestimento em Alumínio", "Fachada Compósita", "Fachada em Aço Corten"] },
+    { value: "coberturas", label: "Coberturas", subtypes: ["Marquise", "Pérgola", "Cobertura de Garagem", "Cobertura Industrial"] },
+    { value: "outro",      label: "Outro",      subtypes: [] },
 ]
  
 const trustItems = [
@@ -36,7 +36,10 @@ export default function OrcamentoPage() {
     const [step, setStep] = useState(0)
     const [submitted, setSubmitted] = useState(false)
     const [fileNames, setFileNames] = useState([])
- 
+    const [collapsedServices, setCollapsedServices] = useState(new Set())
+    const [pendingDelete, setPendingDelete] = useState(null)
+    const [expandedItems, setExpandedItems] = useState(new Set())
+
     const [form, setForm] = useState({
       services:      [],
       serviceDetails: {},
@@ -48,36 +51,131 @@ export default function OrcamentoPage() {
     })
 
     const set = (field) => (e) => setForm(prev => ({ ...prev, [field]: e.target.value }))
+    const setPhone = (e) => setForm(prev => ({ ...prev, phone: e.target.value.replace(/\D/g, '') }))
 
     const toggleService = (value) => {
+      if (form.services.includes(value)) {
+        if (value === 'outro') {
+          setForm(prev => ({ ...prev, services: prev.services.filter(s => s !== value) }))
+        } else {
+          const detail = form.serviceDetails[value]
+          const hasDetails = detail?.items?.some(item => item.subType || item.width || item.height)
+          if (hasDetails) {
+            setCollapsedServices(prev => new Set([...prev, value]))
+            setPendingDelete({ type: 'service', svcValue: value })
+          } else {
+            removeService(value)
+          }
+        }
+      } else {
+        if (value === 'outro') {
+          setForm(prev => ({ ...prev, services: [...prev.services, value] }))
+        } else {
+          setForm(prev => {
+            const serviceDetails = { ...prev.serviceDetails }
+            serviceDetails[value] = { quantity: 1, items: [{ subType: '', width: '', height: '' }] }
+            return { ...prev, services: [...prev.services, value], serviceDetails }
+          })
+        }
+      }
+    }
+
+    const removeService = (svcValue) => {
       setForm(prev => {
-        const selected = prev.services.includes(value)
-        const services = selected
-          ? prev.services.filter(s => s !== value)
-          : [...prev.services, value]
+        const services = prev.services.filter(s => s !== svcValue)
         const serviceDetails = { ...prev.serviceDetails }
-        if (selected) delete serviceDetails[value]
-        else serviceDetails[value] = { subType: '', width: '', height: '' }
+        delete serviceDetails[svcValue]
         return { ...prev, services, serviceDetails }
+      })
+      setCollapsedServices(prev => { const s = new Set(prev); s.delete(svcValue); return s })
+      setExpandedItems(prev => {
+        const next = new Set(prev)
+        for (const key of prev) { if (key.startsWith(`${svcValue}-`)) next.delete(key) }
+        return next
       })
     }
 
-    const setDetail = (svcValue, field) => (eOrValue) => {
-      const val = typeof eOrValue === 'string' ? eOrValue : eOrValue.target.value
-        setForm(prev => ({
-            ...prev,
-            serviceDetails: {
-              ...prev.serviceDetails,
-              [svcValue]: { ...prev.serviceDetails[svcValue], [field]: val }
-            }
-        }))
+    const removeItem = (svcValue, idx) => {
+      setForm(prev => {
+        const items = (prev.serviceDetails[svcValue]?.items || []).filter((_, i) => i !== idx)
+        return {
+          ...prev,
+          serviceDetails: {
+            ...prev.serviceDetails,
+            [svcValue]: { ...prev.serviceDetails[svcValue], quantity: items.length, items }
+          }
+        }
+      })
+      setExpandedItems(prev => { const s = new Set(prev); s.delete(`${svcValue}-${idx}`); return s })
     }
 
-    const step1Valid = form.services.length > 0 && form.services.every(v => {
-      const svc = servicos.find(s => s.value === v)
-      return !svc || svc.subtypes.length === 0 || !!form.serviceDetails[v]?.subType
-    })
-    const step2Valid = form.name.trim() && form.email.trim() && form.phone.trim() && form.address.trim()
+    const requestDeleteService = (svcValue) => setPendingDelete({ type: 'service', svcValue })
+    const requestDeleteItem    = (svcValue, idx) => setPendingDelete({ type: 'item', svcValue, idx })
+    const cancelDelete         = () => setPendingDelete(null)
+    const confirmDeleteAction  = () => {
+      if (!pendingDelete) return
+      if (pendingDelete.type === 'service') removeService(pendingDelete.svcValue)
+      else removeItem(pendingDelete.svcValue, pendingDelete.idx)
+      setPendingDelete(null)
+    }
+
+    const toggleItemExpand = (svcValue, idx) => {
+      const key = `${svcValue}-${idx}`
+      setExpandedItems(prev => {
+        const s = new Set(prev)
+        if (s.has(key)) s.delete(key); else s.add(key)
+        return s
+      })
+    }
+
+    const collapseService = (value) => setCollapsedServices(prev => new Set([...prev, value]))
+    const expandService  = (value) => setCollapsedServices(prev => { const s = new Set(prev); s.delete(value); return s })
+
+    const setQuantity = (svcValue) => (e) => {
+      const raw = e.target.value
+      setForm(prev => ({
+        ...prev,
+        serviceDetails: {
+          ...prev.serviceDetails,
+          [svcValue]: { ...prev.serviceDetails[svcValue], quantity: raw }
+        }
+      }))
+    }
+
+    const commitQuantity = (svcValue) => () => {
+      setForm(prev => {
+        const qty = Math.max(1, parseInt(prev.serviceDetails[svcValue]?.quantity) || 1)
+        const current = prev.serviceDetails[svcValue]?.items || []
+        const items = Array.from({ length: qty }, (_, i) => current[i] || { subType: '', width: '', height: '' })
+        return {
+          ...prev,
+          serviceDetails: {
+            ...prev.serviceDetails,
+            [svcValue]: { ...prev.serviceDetails[svcValue], quantity: qty, items }
+          }
+        }
+      })
+    }
+
+    const setItemDetail = (svcValue, index, field) => (eOrValue) => {
+      const val = typeof eOrValue === 'string' ? eOrValue : eOrValue.target.value
+      setForm(prev => {
+        const items = [...(prev.serviceDetails[svcValue]?.items || [])]
+        items[index] = { ...items[index], [field]: val }
+        return {
+          ...prev,
+          serviceDetails: {
+            ...prev.serviceDetails,
+            [svcValue]: { ...prev.serviceDetails[svcValue], items }
+          }
+        }
+      })
+    }
+
+    const outroSelected = form.services.includes('outro')
+    const step1Valid = form.services.length > 0 && (!outroSelected || form.description.trim().length > 0)
+    const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())
+    const step2Valid = form.name.trim() && emailValid && form.phone.trim() && form.address.trim()
 
     const handleSubmit = () => {
         console.log('Form submitted:', form)
@@ -207,7 +305,7 @@ export default function OrcamentoPage() {
                       <label htmlFor="phone" className={labelClass}>
                         Telefone
                       </label>
-                      <input type="tel" id="phone" value={form.phone} onChange={set('phone')} placeholder="912 345 678" className={inputClass} />
+                      <input type="tel" id="phone" value={form.phone} onChange={setPhone} inputMode="numeric" placeholder="912345678" className={inputClass} />
                     </div>
                   </div>
 
@@ -217,10 +315,13 @@ export default function OrcamentoPage() {
                         Email
                       </label>
                       <input type="email" id="email" value={form.email} onChange={set('email')} placeholder="exemplo@email.com" className={inputClass} />
+                      {form.email.trim() && !emailValid && (
+                        <p className="text-red-500 text-[10px] mt-0.5">Email inválido</p>
+                      )}
                     </div>
                     <div className="flex-1 flex flex-col gap-1.5">
                       <label htmlFor="address" className={labelClass}>
-                        Morada da obra <span className="normal-case font-normal text-zinc-300"></span>
+                        Morada <span className="normal-case font-normal text-zinc-300"></span>
                       </label>
                       <input type="text" id="address" value={form.address} onChange={set('address')} placeholder="Rua, Cidade, Código Postal" className={inputClass} />
                     </div>
@@ -268,7 +369,7 @@ export default function OrcamentoPage() {
                   {/* Service multi-select */}
                   <div>
                     <label className={labelClass + " block mb-3"}>
-                      Tipo de serviço <span className="normal-case font-normal text-zinc-300">(pode selecionar mais do que um)</span>
+                      Tipo de serviço <span className="normal-case font-normal text-zinc-400/70">(pode selecionar mais do que um)</span>
                     </label>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                       {servicos.map((s) => (
@@ -289,66 +390,201 @@ export default function OrcamentoPage() {
                   </div>
 
                   {/* Per-service detail panels */}
-                  {form.services.length > 0 && (
+                  {form.services.filter(v => v !== 'outro').length > 0 && (
                     <div className="flex flex-col gap-4">
-                      {form.services.map((value) => {
+                      {form.services.filter(v => v !== 'outro').map((value) => {
                         const svc = servicos.find(s => s.value === value)
-                        const detail = form.serviceDetails[value] || {}
+                        const detail = form.serviceDetails[value] || { quantity: 1, items: [] }
+                        const isCollapsed = collapsedServices.has(value)
+
+                        if (isCollapsed) {
+                          const isServicePending = pendingDelete?.type === 'service' && pendingDelete.svcValue === value
+                          return (
+                            <div key={value} className="border border-stone-300 bg-stone-50 p-5 flex flex-col gap-3">
+                              {/* Group header */}
+                              <div className="flex items-center justify-between">
+                                <div>
+                                  <p className={labelClass}>{svc.label}</p>
+                                  <p className="text-sm font-semibold text-zinc-900 mt-0.5">
+                                    {detail.quantity} {detail.quantity === 1 ? 'Unidade' : 'Unidades'}
+                                  </p>
+                                </div>
+                                {isServicePending ? (
+                                  <div className="flex items-center gap-3">
+                                    <span className="text-[10px] text-zinc-500">Remover tudo?</span>
+                                    <button type="button" onClick={confirmDeleteAction} className="text-[10px] font-bold uppercase tracking-widest text-red-500 hover:text-red-700 cursor-pointer transition-colors duration-200">Sim</button>
+                                    <button type="button" onClick={cancelDelete} className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 hover:text-zinc-700 cursor-pointer transition-colors duration-200">Não</button>
+                                  </div>
+                                ) : (
+                                  <div className="flex items-center gap-4">
+                                    <button type="button" onClick={() => expandService(value)} className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 hover:text-zinc-900 transition-colors duration-200 cursor-pointer">
+                                      Editar tudo
+                                    </button>
+                                    <button type="button" onClick={() => requestDeleteService(value)} className="text-[10px] font-bold uppercase tracking-widest text-red-400 hover:text-red-600 transition-colors duration-200 cursor-pointer">
+                                      Remover
+                                    </button>
+                                  </div>
+                                )}
+                              </div>
+
+                              {/* Per-item rows */}
+                              {(detail.items || []).map((item, idx) => {
+                                const itemKey = `${value}-${idx}`
+                                const isItemExpanded = expandedItems.has(itemKey)
+                                const isItemPending = pendingDelete?.type === 'item' && pendingDelete.svcValue === value && pendingDelete.idx === idx
+                                const parts = [item.subType, item.width && `L: ${item.width} cm`, item.height && `A: ${item.height} cm`].filter(Boolean)
+
+                                return (
+                                  <div key={idx} className="border-t border-stone-200 pt-3 flex flex-col gap-3">
+                                    {isItemExpanded ? (
+                                      <div className="flex flex-col gap-4">
+                                        <div className="flex items-center justify-between">
+                                          <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">
+                                            {svc.label.replace(/s$/i, '')} {idx + 1}
+                                          </p>
+                                          <button type="button" onClick={() => toggleItemExpand(value, idx)} className="text-[10px] font-bold uppercase tracking-widest text-zinc-900 hover:text-golden-amber transition-colors duration-200 cursor-pointer">
+                                            Confirmar
+                                          </button>
+                                        </div>
+                                        {svc.subtypes.length > 0 && (
+                                          <div>
+                                            <label className={labelClass + " block mb-2"}>Tipo</label>
+                                            <div className="flex flex-wrap gap-2">
+                                              {svc.subtypes.map((sub) => (
+                                                <button key={sub} type="button" onClick={() => setItemDetail(value, idx, 'subType')(sub === item.subType ? '' : sub)}
+                                                  className={`px-3 py-2 text-xs font-bold uppercase tracking-wider border transition-all duration-200 ${item.subType === sub ? 'border-zinc-900 bg-zinc-900 text-white' : 'border-stone-300 text-zinc-500 hover:border-zinc-400 hover:text-zinc-900'}`}>
+                                                  {sub}
+                                                </button>
+                                              ))}
+                                            </div>
+                                          </div>
+                                        )}
+                                        <div className="flex gap-4">
+                                          <div className="flex-1 flex flex-col gap-1.5">
+                                            <label className={labelClass}>Largura (cm)</label>
+                                            <input type="number" min="0" value={item.width || ''} onChange={setItemDetail(value, idx, 'width')} placeholder="ex: 90" className={inputClass} />
+                                          </div>
+                                          <div className="flex-1 flex flex-col gap-1.5">
+                                            <label className={labelClass}>Altura (cm)</label>
+                                            <input type="number" min="0" value={item.height || ''} onChange={setItemDetail(value, idx, 'height')} placeholder="ex: 210" className={inputClass} />
+                                          </div>
+                                        </div>
+                                      </div>
+                                    ) : (
+                                      <div className="flex items-center justify-between gap-2">
+                                        <p className="text-xs text-zinc-600">
+                                          <span className="font-bold text-zinc-400 mr-1">{idx + 1}.</span>
+                                          {parts.length > 0 ? parts.join(' · ') : <span className="text-zinc-300 italic">Sem detalhes</span>}
+                                        </p>
+                                        {isItemPending ? (
+                                          <div className="flex items-center gap-2 shrink-0">
+                                            <span className="text-[10px] text-zinc-500">Remover?</span>
+                                            <button type="button" onClick={confirmDeleteAction} className="text-[10px] font-bold uppercase tracking-widest text-red-500 hover:text-red-700 cursor-pointer transition-colors duration-200">Sim</button>
+                                            <button type="button" onClick={cancelDelete} className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 hover:text-zinc-700 cursor-pointer transition-colors duration-200">Não</button>
+                                          </div>
+                                        ) : (
+                                          <div className="flex items-center gap-3 shrink-0">
+                                            <button type="button" onClick={() => toggleItemExpand(value, idx)} className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 hover:text-zinc-900 transition-colors duration-200 cursor-pointer">Editar</button>
+                                            {detail.items.length > 1 && (
+                                              <button type="button" onClick={() => requestDeleteItem(value, idx)} className="text-sm text-red-400 hover:text-red-600 transition-colors duration-200 cursor-pointer leading-none" aria-label="Remover">✕</button>
+                                            )}
+                                          </div>
+                                        )}
+                                      </div>
+                                    )}
+                                  </div>
+                                )
+                              })}
+                            </div>
+                          )
+                        }
+
                         return (
                           <div key={value} className="border border-stone-300 bg-stone-50 p-5 flex flex-col gap-5">
-                            <p className={labelClass}>{svc.label}</p>
+                            <div className="flex items-center justify-between">
+                              <p className={labelClass}>{svc.label}</p>
+                              <div className="flex items-center gap-2">
+                                <label className={labelClass}>Quantidade</label>
+                                <input
+                                  type="number"
+                                  min="1"
+                                  value={detail.quantity}
+                                  onChange={setQuantity(value)}
+                                  onBlur={commitQuantity(value)}
+                                  className="w-16 border-b border-stone-400 bg-transparent px-0 py-1 text-sm text-zinc-900 text-center outline-none focus:border-golden"
+                                />
+                              </div>
+                            </div>
 
-                            {svc.subtypes.length > 0 && (
-                              <div>
-                                <label className={labelClass + " block mb-2"}>
-                                  Tipo
-                                </label>
-                                <div className="flex flex-wrap gap-2">
-                                  {svc.subtypes.map((sub) => (
-                                    <button
-                                      key={sub}
-                                      type="button"
-                                      onClick={() => setDetail(value, 'subType')(sub)}
-                                      className={`px-3 py-2 text-xs font-bold uppercase tracking-wider border transition-all duration-200 ${
-                                        detail.subType === sub
-                                        ? 'border-zinc-900 bg-zinc-900 text-white'
-                                        : 'border-stone-300 text-zinc-500 hover:border-zinc-400 hover:text-zinc-900'
-                                      }`}
-                                    >
-                                      {sub}
-                                    </button>
-                                  ))}
+                            {(detail.items || []).map((item, idx) => (
+                              <div key={idx} className="flex flex-col gap-4 pt-4 border-t border-stone-200">
+                                <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">
+                                  {svc.label.replace(/s$/i, '')} {idx + 1}
+                                </p>
+
+                                {svc.subtypes.length > 0 && (
+                                  <div>
+                                    <label className={labelClass + " block mb-2"}>
+                                      Tipo
+                                    </label>
+                                    <div className="flex flex-wrap gap-2">
+                                      {svc.subtypes.map((sub) => (
+                                        <button
+                                          key={sub}
+                                          type="button"
+                                          onClick={() => setItemDetail(value, idx, 'subType')(sub === item.subType ? '' : sub)}
+                                          className={`px-3 py-2 text-xs font-bold uppercase tracking-wider border transition-all duration-200 ${
+                                            item.subType === sub
+                                            ? 'border-zinc-900 bg-zinc-900 text-white'
+                                            : 'border-stone-300 text-zinc-500 hover:border-zinc-400 hover:text-zinc-900'
+                                          }`}
+                                        >
+                                          {sub}
+                                        </button>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
+
+                                <div className="flex gap-4">
+                                  <div className="flex-1 flex flex-col gap-1.5">
+                                    <label className={labelClass}>
+                                      Largura (cm)
+                                    </label>
+                                    <input
+                                      type="number"
+                                      min="0"
+                                      value={item.width || ''}
+                                      onChange={setItemDetail(value, idx, 'width')}
+                                      placeholder="ex: 90"
+                                      className={inputClass}
+                                    />
+                                  </div>
+                                  <div className="flex-1 flex flex-col gap-1.5">
+                                    <label className={labelClass}>
+                                      Altura (cm)
+                                    </label>
+                                    <input
+                                      type="number"
+                                      min="0"
+                                      value={item.height || ''}
+                                      onChange={setItemDetail(value, idx, 'height')}
+                                      placeholder="ex: 210"
+                                      className={inputClass}
+                                    />
+                                  </div>
                                 </div>
                               </div>
-                            )}
+                            ))}
 
-                            <div className="flex flex-col sm:flex-row gap-4">
-                              <div className="flex-1 flex flex-col gap-1.5">
-                                <label className={labelClass}>
-                                  Largura (cm) <span className="normal-case font-normal text-zinc-300">(opcional)</span>
-                                </label>
-                                <input
-                                  type="number"
-                                  min="0"
-                                  value={detail.width || ''}
-                                  onChange={setDetail(value, 'width')}
-                                  placeholder="ex: 90"
-                                  className={inputClass}
-                                />
-                              </div>
-                              <div className="flex-1 flex flex-col gap-1.5">
-                                <label className={labelClass}>
-                                  Altura (cm) <span className="normal-case font-normal text-zinc-300">(opcional)</span>
-                                </label>
-                                <input
-                                  type="number"
-                                  min="0"
-                                  value={detail.height || ''}
-                                  onChange={setDetail(value, 'height')}
-                                  placeholder="ex: 210"
-                                  className={inputClass}
-                                />
-                              </div>
+                            <div className="flex justify-end pt-2 border-t border-stone-200">
+                              <button
+                                type="button"
+                                onClick={() => collapseService(value)}
+                                className="text-[10px] font-bold uppercase tracking-widest text-zinc-900 hover:text-golden-amber transition-colors duration-200 cursor-pointer"
+                              >
+                                Confirmar
+                              </button>
                             </div>
                           </div>
                         )
@@ -359,22 +595,31 @@ export default function OrcamentoPage() {
                   {/* General info */}
                   <div className="flex flex-col gap-1.5">
                     <label htmlFor="description" className={labelClass}>
-                      Informação adicional <span className="normal-case font-normal text-zinc-300">(opcional)</span>
+                      {outroSelected
+                        ? <>Descrição do projeto <span className="normal-case font-normal text-red-400">*</span></>
+                        : <>Informação adicional <span className="normal-case font-normal text-zinc-400/70">(opcional)</span></>
+                      }
                     </label>
                     <textarea
                       id="description"
                       value={form.description}
                       onChange={set('description')}
                       rows={3}
-                      placeholder="Outros detalhes relevantes - material pretendido, cor, acabamento, quantidade..."
+                      placeholder={outroSelected
+                        ? "Descreva aqui o seu projeto - tipo de trabalho, material, dimensões, localização..."
+                        : "Outros detalhes relevantes - material pretendido, cor, acabamento, quantidade..."
+                      }
                       className={inputClass + " resize-none"}
                     />
+                    {outroSelected && !form.description.trim() && (
+                      <p className="text-[10px] text-red-400 mt-0.5">Obrigatório quando "Outro" está selecionado.</p>
+                    )}
                   </div>
 
                   {/* File upload */}
                   <div className="flex flex-col gap-1.5">
                     <label className={labelClass}>
-                      Fotografias ou esboço <span className="normal-case font-normal text-zinc-300">(opcional)</span>
+                      Fotografias ou esboço <span className="normal-case font-normal text-zinc-400/70">(opcional)</span>
                     </label>
 
                     {fileNames.length > 0 && (
@@ -461,8 +706,38 @@ export default function OrcamentoPage() {
  
                   {/* Summary */}
                   <div className="flex flex-col gap-0 border border-stone-400">
+                    {/* Contact block */}
+                    <div className="p-5">
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-zinc-400">
+                          Dados de contacto
+                        </span>
+                        <button onClick={() => setStep(0)} className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 hover:text-zinc-900 transition-colors duration-200">
+                          Editar
+                        </button>
+                      </div>
+                      <div className="grid grid-cols-2 gap-3">
+                        {[
+                          { label: "Nome",     value: form.name    },
+                          { label: "Telefone", value: form.phone   },
+                          { label: "Email",    value: form.email   },
+                          { label: "Morada",   value: form.address },
+                        ].map((row, i) => (
+                        <div key={i}>
+                          <p className="text-[10px] text-zinc-400 uppercase tracking-widest font-bold">
+                            {row.label}
+                          </p>
+
+                          <p className="text-sm text-zinc-700 mt-0.5">
+                            {row.value}
+                          </p>
+
+                        </div>
+                        ))}
+                      </div>
+                    </div>
                     {/* Project block */}
-                    <div className="p-5 border-b border-stone-400">
+                    <div className="p-5 border-t border-stone-400">
                       <div className="flex items-center justify-between mb-4">
                         <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-zinc-400">
                           Projeto
@@ -476,21 +751,33 @@ export default function OrcamentoPage() {
                         {form.services.map((value) => {
                           const svc = servicos.find(s => s.value === value)
                           const detail = form.serviceDetails[value] || {}
+                          if (value === 'outro') {
+                            return (
+                              <div key={value} className="flex flex-col gap-1.5">
+                                <p className="text-[10px] text-zinc-400 uppercase tracking-widest font-bold">
+                                  {svc.label}
+                                </p>
+                                <p className="text-xs text-zinc-400 italic">Ver informação adicional</p>
+                              </div>
+                            )
+                          }
                           return (
-                            <div key={value} className="flex flex-col gap-0.5">
+                            <div key={value} className="flex flex-col gap-1.5">
                               <p className="text-[10px] text-zinc-400 uppercase tracking-widest font-bold">
-                                {svc.label}
+                                {svc.label} <span className="text-zinc-300">× {detail.quantity}</span>
                               </p>
-                              {detail.subType && (
-                                <p className="text-sm font-semibold text-zinc-900 mt-0.5">
-                                  {detail.subType}
-                                </p>
-                              )}
-                              {(detail.width || detail.height) && (
-                                <p className="text-xs text-zinc-500 mt-0.5">
-                                  {[detail.width && `L: ${detail.width} cm`, detail.height && `A: ${detail.height} cm`].filter(Boolean).join(' · ')}
-                                </p>
-                              )}
+                              {(detail.items || []).map((item, idx) => {
+                                const parts = [
+                                  item.subType,
+                                  item.width && `L: ${item.width} cm`,
+                                  item.height && `A: ${item.height} cm`,
+                                ].filter(Boolean)
+                                return parts.length > 0 ? (
+                                  <p key={idx} className="text-xs text-zinc-600">
+                                    <span className="text-zinc-400">{idx + 1}.</span> {parts.join(' · ')}
+                                  </p>
+                                ) : null
+                              })}
                             </div>
                           )
                         })}
@@ -521,36 +808,6 @@ export default function OrcamentoPage() {
                       </div>
                     </div>
  
-                    {/* Contact block */}
-                    <div className="p-5">
-                      <div className="flex items-center justify-between mb-4">
-                        <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-zinc-400">
-                          Dados de contacto
-                        </span>
-                        <button onClick={() => setStep(0)} className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 hover:text-zinc-900 transition-colors duration-200">
-                          Editar
-                        </button>
-                      </div>
-                      <div className="grid grid-cols-2 gap-3">
-                        {[
-                          { label: "Nome",          value: form.name  },
-                          { label: "Telefone",      value: form.phone },
-                          { label: "Email",         value: form.email },
-                          { label: "Código postal", value: form.postal || '—' },
-                        ].map((row, i) => (
-                        <div key={i}>
-                          <p className="text-[10px] text-zinc-400 uppercase tracking-widest font-bold">
-                            {row.label}
-                          </p>
-
-                          <p className="text-sm text-zinc-700 mt-0.5">
-                            {row.value}
-                          </p>
-
-                        </div>
-                        ))}
-                      </div>
-                    </div>
                   </div>
  
                   <p className="text-xs text-zinc-400 leading-relaxed">
@@ -586,9 +843,8 @@ export default function OrcamentoPage() {
             transition={{ duration: 0.5 }}
             className="bg-stone-100 border border-stone-400 shadow-sm p-12 flex flex-col items-center text-center gap-6"
           >
-            <div className="w-14 h-14 border border-golden-amber flex items-center justify-center">
-              <GoShieldCheck className="w-7 h-7 text-golden-amber" />
-            </div>
+            <GoShieldCheck className="w-7 h-7 text-dark-golden" />
+            
             <div>
               <h2 className="text-2xl font-black uppercase tracking-tight text-zinc-900">
                 Pedido enviado

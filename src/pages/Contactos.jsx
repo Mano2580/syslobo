@@ -55,7 +55,7 @@ const socialLinks = [
 
 export default function Contactos() {
   return (
-    <div className="bg-[#d2cfca] min-h-screen">
+    <div className="bg-stone-400/50 min-h-screen">
 
       <Navbar />
 
@@ -86,23 +86,24 @@ export default function Contactos() {
         </div>
 
         <p className="text-zinc-600 text-sm leading-relaxed max-w-md mb-6">
-          Seja para um orçamento, uma questão técnica ou apenas para conhecer o nosso trabalho — estamos aqui.
+          Seja para um orçamento, uma questão técnica ou apenas para conhecer o nosso trabalho - estamos aqui.
         </p>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+
           {/* Left Column - Contact Info */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="space-y-10"
+            className="space-y-10 lg:pr-32 pb-8 lg:pb-0"
           >
 
             {/* Contact Details */}
-            <div className="divide-y divide-[#c0bdb7]">
+            <div className="divide-y divide-zinc-400/50">
               {contactDetails.map((item, i) => (
                 <div key={i} className="flex items-start gap-5 py-5 first:pt-0">
-                  <div className="w-10 h-10 border border-[#c0bdb7] flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 border border-zinc-400/50 flex items-center justify-center shrink-0">
                     {item.icon}
                   </div>
                   <div className="mt-1">
@@ -126,7 +127,7 @@ export default function Contactos() {
                     key={i}
                     href={social.href}
                     aria-label={social.label}
-                    className="w-10 h-10 border border-[#c0bdb7] flex items-center justify-center text-dark-golden hover:bg-dark-golden hover:border-dark-golden hover:text-white transition-colors duration-200"
+                    className="w-10 h-10 border border-zinc-400/50 flex items-center justify-center text-dark-golden/50 hover:bg-dark-golden hover:border-dark-golden hover:text-white transition-colors duration-200"
                   >
                     <social.icon className="w-4 h-4" />
                   </a>
@@ -140,31 +141,43 @@ export default function Contactos() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
+            className="pt-0"
           >
-            <div className="bg-zinc-900 p-8 sm:p-10">
-              <p className="text-golden text-xs font-bold uppercase tracking-[0.3em] mb-3">Peça um Orçamento</p>
-              <h3 className="text-3xl sm:text-4xl font-black uppercase tracking-tighter text-white mb-4">
-                Pronto para começar o seu projeto?
-              </h3>
-              <p className="text-zinc-400 text-sm leading-relaxed mb-8">
-                Preencha o nosso formulário de contacto e entraremos em contacto consigo brevemente. Resposta garantida
-                em 24 horas úteis.
-              </p>
+            <div className="relative bg-stone-300 border border-stone-300 p-8 md:p-10 shadow-lg overflow-hidden">
 
-              <div className="flex items-center justify-between gap-4">
+              {/* Watermark logo */}
+              <img
+                src={SysloboLogo}
+                alt=""
+                aria-hidden="true"
+                className="absolute bottom-5 right-1 md:bottom-10 md:right-10 h-32 w-32 md:h-44 md:w-44 object-contain pointer-events-none select-none"
+              />
+
+              <div className="relative z-10 flex flex-col">
+
+                <p className="text-golden text-xs font-bold uppercase tracking-[0.3em] mb-4">
+                  Peça um Orçamento
+                </p>
+
+                <h3 className="text-3xl sm:text-4xl font-bold uppercase tracking-tight text-zinc-900 mb-4 leading-tight">
+                  Pronto para começar o seu projeto?
+                </h3>
+
+                {/* Benefits */}
+                <div className="space-y-2 mb-8 text-sm text-zinc-700">
+                  <p>✔ Acompanhamento personalizado</p>
+                  <p>✔ Resposta rápida</p>
+                  <p>✔ Orçamento gratuito</p>
+                </div>
+
+                {/* Strong CTA button */}
                 <a
                   href="/orcamento"
-                  className="group inline-flex items-center gap-3 bg-golden text-zinc-900 px-6 py-4 font-bold text-sm uppercase tracking-wider hover:bg-white transition-colors duration-200"
+                  className="group inline-flex items-center justify-center gap-2 bg-zinc-900 hover:bg-golden px-4 py-3 sm:px-6 sm:py-4 font-bold text-xs sm:text-sm uppercase tracking-widest text-white hover:text-zinc-900 transition-all duration-300 shadow-md self-start"
                 >
-                  Enviar Mensagem
+                  Pedir Orçamento
                   <HiArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
                 </a>
-                
-                <img 
-                  src={SysloboLogo} 
-                  alt="Syslobo" 
-                  className="h-24">
-                </img>
 
               </div>
             </div>
@@ -184,7 +197,7 @@ export default function Contactos() {
           <h3 className="text-5xl md:text-6xl font-black uppercase tracking-tighter text-zinc-900 mb-10">
             Como Chegar
           </h3>
-          <div className="border border-[#c0bdb7] overflow-hidden w-full h-96">
+          <div className="border border-stone-300 overflow-hidden w-full h-96">
             <iframe
               title="Localização Syslobo"
               aria-label="Mapa com a localização da Syslobo em Carapeços, Portugal"

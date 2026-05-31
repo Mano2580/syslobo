@@ -6,33 +6,35 @@ import { motion, AnimatePresence } from "framer-motion";
 import ex1 from "@/assets/ex1.jpg";
 import ex2 from "@/assets/ex2.jpg";
 import ex3 from "@/assets/ex3.jpg";
+import Portao_P1 from "@/assets/Portoes/Portao_P1.jpg";
+import Portao_P2 from "@/assets/Portoes/Portao_P2.jpg";
+import Portao_P3 from "@/assets//Portoes/Portao_P3.jpg";
+
 import { GoShieldCheck } from "react-icons/go";
 import { BsChatQuote } from "react-icons/bs";
- 
 const projetos = [
-    { id: 1,  category: "Portões",    title: "Portão Residencial Automatizado",     description: "Portão de correr em aço com motorização e comando remoto.", images: [ex1, ex2, ex3] },
+    { id: 1,  category: "Portões",    title: "Portão Residencial Preto",     description: "Portão de correr em aço com motorização e comando remoto.", images: [Portao_P1, Portao_P2, Portao_P3] },
     { id: 2,  category: "Grades",     title: "Grades de Segurança Modernas",         description: "Grades em ferro lacado com sistema de abertura certificado.", images: [ex2, ex1, ex3] },
-    { id: 3,  category: "Estruturas", title: "Cobertura Metálica para Garagem",      description: "Estrutura em aço galvanizado com telha sandwich.", images: [ex3, ex1, ex2] },
+    { id: 3,  category: "Coberturas",  title: "Cobertura Metálica para Garagem",      description: "Cobertura em aço galvanizado com telha sandwich para garagem individual.", images: [ex3, ex1, ex2] },
     { id: 4,  category: "Janelas",    title: "Caixilharia em Alumínio Termolacado",  description: "Janelas oscilobatentes com corte térmico e vidro duplo.", images: [ex1, ex3, ex2] },
     { id: 5,  category: "Portões",    title: "Portão Industrial de Correr",          description: "Portão de grandes dimensões para armazém industrial.", images: [ex2, ex3, ex1] },
-    { id: 6,  category: "Estores",    title: "Estores Exteriores Motorizados",       description: "Estores em alumínio lacado com motor Somfy integrado.", images: [ex3, ex2, ex1] },
+    { id: 6,  category: "Fachadas",    title: "Fachada Metálica em Alumínio",            description: "Revestimento de fachada em perfis de alumínio anodizado com acabamento personalizado.", images: [ex3, ex2, ex1] },
     { id: 7,  category: "Grades",     title: "Grade de Varanda em Ferro Forjado",    description: "Grade artesanal com motivos geométricos e tratamento anti-corrosivo.", images: [ex1, ex2, ex3] },
-    { id: 8,  category: "Estruturas", title: "Pérgola Metálica com Cobertura",       description: "Pérgola em aço com lâminas orientáveis e LED integrado.", images: [ex2, ex1, ex3] },
+    { id: 8,  category: "Coberturas",  title: "Pérgola Metálica com Cobertura",       description: "Pérgola em aço com lâminas orientáveis e LED integrado.", images: [ex2, ex1, ex3] },
     { id: 9,  category: "Portões",    title: "Portão Batente de Ferro Forjado",      description: "Portão batente a dois vãos em ferro forjado, preto mate.", images: [ex3, ex1, ex2] },
     { id: 10, category: "Janelas",    title: "Janelas de Correr em Alumínio",        description: "Sistema de correr de grande vão, perfis slim.", images: [ex1, ex3, ex2] },
-    { id: 11, category: "Estores",    title: "Caixa de Estore Embutida",             description: "Solução de estore com caixa embutida na parede.", images: [ex2, ex3, ex1] },
-    { id: 12, category: "Estruturas", title: "Escada Metálica Interior",             description: "Escada em aço inox com degraus em madeira.", images: [ex3, ex2, ex1] },
+    { id: 11, category: "Fachadas",    title: "Painel de Fachada Modular",             description: "Painéis de revestimento em alumínio compósito para fachada de edifício comercial.", images: [ex2, ex3, ex1] },
+    { id: 12, category: "Coberturas",  title: "Marquise em Ferro Forjado",            description: "Marquise em ferro forjado com vidro temperado sobre entrada principal.", images: [ex3, ex2, ex1] },
 ];
  
-const categorias = ["Todos", "Portões", "Grades", "Estruturas", "Janelas", "Estores"];
+const categorias = ["Todos", "Portões", "Grades", "Coberturas", "Janelas", "Fachadas"];
  
-function ProjectModal({ projeto, selectedIndex, total, onClose, onPrev, onNext }) {
+const COPIES = 51;
+
+function ProjectModal({ projeto, onClose, onPrev, onNext }) {
     const [activeImg, setActiveImg] = useState(0);
-    const imageRefs = useRef([]);
- 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    useCallback(() => { setActiveImg(0); imageRefs.current = []; }, [projeto.id]);
- 
+    const scrollRef = useRef(null);
+
     useEffect(() => {
         const handleKey = (e) => {
             if (e.key === "Escape") onClose();
@@ -43,57 +45,96 @@ function ProjectModal({ projeto, selectedIndex, total, onClose, onPrev, onNext }
         document.body.style.overflow = "hidden";
         return () => { window.removeEventListener("keydown", handleKey); document.body.style.overflow = ""; };
     }, [onClose, onPrev, onNext]);
- 
+
+    // Center first image on open
+    useEffect(() => {
+        if (!scrollRef.current) return;
+        const el = scrollRef.current;
+        const count = projeto.images.length;
+        requestAnimationFrame(() => {
+            const itemH = el.scrollHeight / (count * COPIES);
+            const middleStart = Math.floor(COPIES / 2) * count * itemH;
+            el.scrollTop = middleStart + itemH / 2 - el.clientHeight / 2;
+        });
+        setActiveImg(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [projeto.id]);
+
+    const handleScroll = useCallback(() => {
+        if (!scrollRef.current) return;
+        const el = scrollRef.current;
+        const count = projeto.images.length;
+        const itemH = el.scrollHeight / (count * COPIES);
+        if (itemH === 0) return;
+        const centerPos = el.scrollTop + el.clientHeight / 2;
+        const idx = Math.floor(centerPos / itemH);
+        setActiveImg(((idx % count) + count) % count);
+    }, [projeto.images.length]);
+
+    const goToImage = useCallback((i) => {
+        if (!scrollRef.current) return;
+        const el = scrollRef.current;
+        const count = projeto.images.length;
+        const itemH = el.scrollHeight / (count * COPIES);
+        const currentIdx = Math.round(el.scrollTop / itemH);
+        const currentCycle = Math.floor(currentIdx / count);
+        const imageTop = (currentCycle * count + i) * itemH;
+        const centeredTop = imageTop + itemH / 2 - el.clientHeight / 2;
+        el.scrollTo({ top: centeredTop, behavior: 'smooth' });
+        setActiveImg(i);
+    }, [projeto.images.length]);
+
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 lg:p-8" onClick={onClose}>
-            <div className="flex flex-col lg:flex-row w-full max-w-6xl max-h-[90vh] bg-stone-300 border border-stone-400 shadow-2xl rounded-sm overflow-hidden" onClick={(e) => e.stopPropagation()}>
-                <div className="flex-1 overflow-y-auto bg-stone-300" style={{ scrollbarWidth: "none" }}
-                    onScroll={(e) => {
-                        const c = e.currentTarget;
-                        const center = c.scrollTop + c.clientHeight / 2;
-                        let closest = 0, minDist = Infinity;
-                        imageRefs.current.forEach((el, i) => {
-                            if (!el) return;
-                            const mid = el.offsetTop + el.offsetHeight / 2;
-                            const dist = Math.abs(mid - center);
-                            if (dist < minDist) { minDist = dist; closest = i; }
-                        });
-                        setActiveImg(closest);
-                    }}
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4 lg:p-12" onClick={onClose}>
+
+            <div className="flex flex-col lg:flex-row w-full max-w-7xl h-full max-h-[85vh] bg-stone-950 border border-zinc-800 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+                {/* Ferris Wheel Infinite Scroll */}
+                <div
+                    ref={scrollRef}
+                    className="flex-1 overflow-y-scroll bg-stone-950"
+                    style={{ scrollbarWidth: 'none' }}
+                    onScroll={handleScroll}
                 >
-                    <div className="flex flex-col gap-6 p-6">
-                        {projeto.images.map((img, i) => (
-                            <img 
-                                key={i} 
-                                ref={(el) => { imageRefs.current[i] = el; }} 
-                                src={img} 
-                                alt={`${projeto.title} ${i + 1}`} 
-                                className="w-full max-h-[65vh] object-contain mx-auto drop-shadow-sm rounded-sm" 
+                    {Array.from({ length: COPIES }, () => projeto.images).flat().map((img, i) => (
+                        <div
+                            key={i}
+                            style={{ flexShrink: 0, padding: '8px 20px' }}
+                            className="flex items-center justify-center"
+                        >
+                            <img
+                                src={img}
+                                alt={`${projeto.title} ${(i % projeto.images.length) + 1}`}
+                                className="w-full object-cover aspect-video"
                             />
-                        ))}
-                    </div>
-                </div>
- 
-                <div className="w-full lg:w-72 flex flex-col bg-stone-300 border-t lg:border-t-0 lg:border-l border-stone-400 shrink-0">
-                    <div className="p-6 border-b border-stone-400 bg-stone-300">
-                        <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-golden bg-amber-50 border border-amber-100 px-2 py-0.5">{projeto.category}</span>
-                        <h3 className="text-zinc-900 font-bold text-lg mt-3 leading-snug">{projeto.title}</h3>
-                        <p className="text-zinc-500 text-sm leading-relaxed mt-3">{projeto.description}</p>
-                    </div>
-                    <div className="flex lg:flex-col gap-3 p-6 overflow-x-auto lg:overflow-x-visible bg-stone-300 flex-1" style={{ scrollbarWidth: "none" }}>
-                        {projeto.images.map((img, i) => (
-                            <img key={i} src={img} alt={`miniatura ${i + 1}`}
-                                onClick={() => imageRefs.current[i]?.scrollIntoView({ behavior: "smooth", block: "center" })}
-                                className={`w-16 lg:w-full object-cover rounded-sm cursor-pointer shrink-0 transition-all duration-200 border-2 ${i === activeImg ? "border-dark-golden opacity-100 scale-105 lg:scale-100" : "border-transparent opacity-50 hover:opacity-80"}`}
-                            />
-                        ))}
-                    </div>
-                    <div className="p-4 border-t border-stone-400 flex items-center justify-between bg-stone-300">
-                        <span className="text-xs text-zinc-400 uppercase tracking-widest font-medium">{selectedIndex + 1} / {total}</span>
-                        <div className="flex gap-2">
-                            <button onClick={onPrev} className="w-8 h-8 border border-stone-400 hover:border-dark-golden text-zinc-500 hover:text-dark-golden text-sm flex items-center justify-center transition-all duration-200 rounded-sm">←</button>
-                            <button onClick={onNext} className="w-8 h-8 border border-stone-400 hover:border-dark-golden text-zinc-500 hover:text-dark-golden text-sm flex items-center justify-center transition-all duration-200 rounded-sm">→</button>
                         </div>
+                    ))}
+                </div>
+
+                {/* Sidebar */}
+                <div className="w-full lg:w-80 flex flex-col border-t lg:border-t-0 lg:border-l border-zinc-800 shrink-0 bg-stone-950">
+                    <div className="p-8 border-b border-zinc-800">
+                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white bg-zinc-800 px-3 py-1">
+                            {projeto.category}
+                        </span>
+                        <h3 className="text-white font-black text-xl mt-6 leading-tight uppercase tracking-tight">
+                            {projeto.title}
+                        </h3>
+                        <p className="text-zinc-400 text-sm leading-relaxed mt-4 font-light">
+                            {projeto.description}
+                        </p>
+                    </div>
+                    {/* Thumbnails */}
+                    <div className="flex lg:flex-col gap-2 p-6 lg:overflow-y-auto" style={{ scrollbarWidth: "none" }}>
+                        {projeto.images.map((img, i) => (
+                            <img
+                                key={i}
+                                src={img}
+                                onClick={() => goToImage(i)}
+                                className={`w-20 md:w-28 lg:w-full lg:max-h-32 object-cover cursor-pointer shrink-0 transition-all duration-300 border-2 ${
+                                    i === activeImg ? "border-golden opacity-100" : "border-transparent opacity-30 hover:opacity-100 grayscale"
+                                }`}
+                            />
+                        ))}
                     </div>
                 </div>
             </div>
@@ -105,7 +146,11 @@ export default function GaleriaPage() {
     const [activeCategory, setActiveCategory] = useState("Todos");
     const [selected, setSelected] = useState(null);
     const sidebarRef = useRef(null);
+    const heroRef = useRef(null);
     const [sidebarTop, setSidebarTop] = useState(96);
+    const [showFilter, setShowFilter] = useState(true);
+    const [lastFilterScrollY, setLastFilterScrollY] = useState(0);
+    const [filterFixed, setFilterFixed] = useState(false);
 
     useEffect(() => {
         const updateTop = () => {
@@ -118,6 +163,29 @@ export default function GaleriaPage() {
         window.addEventListener("resize", updateTop);
         return () => window.removeEventListener("resize", updateTop);
     }, []);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => setFilterFixed(!entry.isIntersecting),
+            { threshold: 0 }
+        );
+        if (heroRef.current) observer.observe(heroRef.current);
+        return () => observer.disconnect();
+    }, []);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const currentScroll = window.scrollY;
+            if (currentScroll > lastFilterScrollY) {
+                setShowFilter(false);
+            } else {
+                setShowFilter(true);
+            }
+            setLastFilterScrollY(currentScroll);
+        };
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, [lastFilterScrollY]);
 
     const filtered = activeCategory === "Todos" ? projetos : projetos.filter(p => p.category === activeCategory);
     const selectedIndex = filtered.findIndex(p => p.id === selected);
@@ -132,7 +200,7 @@ export default function GaleriaPage() {
             <Navbar />
 
             {/* ── HERO ── */}
-            <section className="relative bg-zinc-900 overflow-hidden">
+            <section ref={heroRef} className="relative bg-zinc-900 overflow-hidden">
                 <img 
                     src={ex1} 
                     alt="Galeria" 
@@ -159,8 +227,44 @@ export default function GaleriaPage() {
                 </div>
             </section>
  
+            {/* ── MOBILE FILTER ROW (in-flow when hero visible) ── */}
+            {!filterFixed && (
+                <div className="lg:hidden w-full border-b border-stone-400 overflow-x-auto bg-stone-200" style={{ scrollbarWidth: "none" }}>
+                    <div className="flex gap-0 px-6 py-3 w-max">
+                        {categorias.map((cat) => (
+                            <button
+                                key={cat}
+                                onClick={() => setActiveCategory(cat)}
+                                className={`shrink-0 px-4 py-2 text-[11px] font-bold uppercase tracking-widest border-b-2 transition-all duration-200 ${
+                                    activeCategory === cat ? "text-zinc-900 border-golden-amber" : "text-zinc-400 border-transparent hover:text-zinc-600"
+                                }`}
+                            >
+                                {cat}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {/* ── MOBILE FILTER ROW (fixed when hero scrolled out) ── */}
+            <div className={`lg:hidden fixed top-0 left-0 w-full z-40 border-b border-stone-400 overflow-x-auto bg-stone-200 transition-transform duration-300 ${filterFixed && showFilter ? 'translate-y-20 sm:translate-y-28' : '-translate-y-full'}`} style={{ scrollbarWidth: "none" }}>
+                <div className="flex gap-0 px-6 py-3 w-max">
+                    {categorias.map((cat) => (
+                        <button
+                            key={cat}
+                            onClick={() => setActiveCategory(cat)}
+                            className={`shrink-0 px-4 py-2 text-[11px] font-bold uppercase tracking-widest border-b-2 transition-all duration-200 ${
+                                activeCategory === cat ? "text-zinc-900 border-golden-amber" : "text-zinc-400 border-transparent hover:text-zinc-600"
+                            }`}
+                        >
+                            {cat}
+                        </button>
+                    ))}
+                </div>
+            </div>
+
             {/* ── MAIN: vertical sidebar + grid ── */}
-            <div className="flex items-start">
+            <div className={`flex items-start lg:pt-0 ${filterFixed ? 'pt-14' : ''}`}>
  
                 {/* ── VERTICAL FILTER SIDEBAR ── */}
                 <aside ref={sidebarRef} style={{ top: `${sidebarTop}px` }} className="hidden lg:flex flex-col w-44 shrink-0 sticky py-10 px-6 overflow-y-auto">
@@ -182,23 +286,6 @@ export default function GaleriaPage() {
                         ))}
                     </div>
                 </aside>
-
-                {/* ── MOBILE FILTER ROW ── */}
-                <div className="lg:hidden w-full border-b border-stone-400 overflow-x-auto bg-white sticky top-16 z-20" style={{ scrollbarWidth: "none" }}>
-                    <div className="flex gap-0 px-6 py-3 w-max">
-                        {categorias.map((cat) => (
-                            <button
-                                key={cat}
-                                onClick={() => setActiveCategory(cat)}
-                                className={`shrink-0 px-4 py-2 text-[11px] font-bold uppercase tracking-widest border-b-2 transition-all duration-200 ${
-                                    activeCategory === cat ? "text-zinc-900 border-golden-amber" : "text-zinc-400 border-transparent hover:text-zinc-600"
-                                }`}
-                            >
-                                {cat}
-                            </button>
-                        ))}
-                    </div>
-                </div>
  
                 {/* ── PHOTO GRID ── */}
                 <div className="flex-1 p-6 lg:p-8 min-h-[50vh]">
@@ -312,8 +399,6 @@ export default function GaleriaPage() {
             {projeto && (
                 <ProjectModal
                     projeto={projeto}
-                    selectedIndex={selectedIndex}
-                    total={filtered.length}
                     onClose={close}
                     onPrev={prev}
                     onNext={next}

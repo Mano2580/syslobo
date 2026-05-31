@@ -75,7 +75,7 @@ export default function SobreNos() {
                 </section>
 
                 {/* ── HISTÓRIA ── */}
-                <section className="bg-[#e5e2dc] py-20">
+                <section className="bg-stone-200 py-20">
                     <div className="container mx-auto px-6">
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
@@ -143,14 +143,14 @@ export default function SobreNos() {
                 </section>
 
                 {/* ── MISSÃO ── */}
-                <section className="relative bg-[#2a2826] py-20 overflow-hidden">
+                <section className="relative bg-stone-800 py-20 overflow-hidden">
                     <div className="absolute inset-0">
                         <img
                             src={ex2}
                             alt=""
                             className="w-full h-full object-cover opacity-10 grayscale"
                         />
-                        <div className="absolute inset-0 bg-[#2a2826]/80" />
+                        <div className="absolute inset-0 bg-stone-800/80" />
                     </div>
                     <div className="relative container mx-auto px-6 text-center max-w-3xl">
                         <motion.div
@@ -176,7 +176,7 @@ export default function SobreNos() {
 
 
                 {/* ── PERCURSO (TIMELINE) ── */}
-                <section className="bg-[#e5e2dc] py-20 cursor-default">
+                <section className="bg-stone-200 py-20 cursor-default">
                     <div className="container mx-auto px-6">
                         <div className="mb-12">
                             <p className="text-golden text-xs font-bold uppercase tracking-[0.2em] mb-2">
@@ -186,7 +186,7 @@ export default function SobreNos() {
                                 Marcos Importantes
                             </h2>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-[#c5c2bc]">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-stone-300">
                             {marcos.map((m, i) => (
                                 <motion.div
                                     key={i}
@@ -194,7 +194,7 @@ export default function SobreNos() {
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true }}
                                     transition={{ duration: 0.6, delay: i * 0.12 }}
-                                    className="bg-[#e5e2dc] p-8 group"
+                                    className="bg-stone-200 p-8 group"
                                 >
                                     <div className="text-5xl font-black tracking-tighter text-dark-golden">
                                         {m.year}
@@ -212,7 +212,7 @@ export default function SobreNos() {
                 </section>
 
                 {/* ── VALORES ── */}
-                <section className="bg-[#d0cdc7] py-20">
+                <section className="bg-stone-300 py-20">
                     <div className="container mx-auto px-6">
                         <div className="mb-12">
                             <p className="text-golden text-xs font-bold uppercase tracking-[0.2em] mb-2">
@@ -222,7 +222,7 @@ export default function SobreNos() {
                                 Os Nossos Valores
                             </h2>
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 lg:divide-x divide-[#c5c2bc] border border-[#c5c2bc]">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 lg:divide-x divide-stone-300 border border-stone-300">
                             {valores.map((v, i) => (
                                 <motion.div
                                     key={i}
@@ -230,9 +230,9 @@ export default function SobreNos() {
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true }}
                                     transition={{ duration: 0.5, delay: i * 0.1 }}
-                                    className="p-8 flex flex-col gap-4 group hover:bg-[#d5d2cc] transition-colors duration-300"
+                                    className="p-8 flex flex-col gap-4 group hover:bg-stone-300 transition-colors duration-300"
                                 >
-                                    <div className="w-12 h-12 border border-[#c5c2bc] group-hover:border-golden/50 flex items-center justify-center transition-colors duration-300">
+                                    <div className="w-12 h-12 border border-stone-300 group-hover:border-golden/50 flex items-center justify-center transition-colors duration-300">
                                         {v.icon}
                                     </div>
                                     <div>
@@ -250,7 +250,7 @@ export default function SobreNos() {
                 </section>
                 
                 {/* ── CTA ── */}
-                <section className="bg-[#292724] py-20">
+                <section className="bg-stone-900 py-20">
                     <div className="container mx-auto px-6 text-center">
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
@@ -268,7 +268,7 @@ export default function SobreNos() {
                             <div className="flex flex-wrap justify-center gap-4">
                                 <a
                                     href="/orcamento"
-                                    className="px-8 py-3.5 bg-golden hover:bg-golden/90 text-[#0a0a0c] font-bold text-sm uppercase tracking-wide transition-colors duration-300"
+                                    className="px-8 py-3.5 bg-golden hover:bg-golden/90 text-stone-950 font-bold text-sm uppercase tracking-wide transition-colors duration-300"
                                 >
                                     Pedir Orçamento
                                 </a>

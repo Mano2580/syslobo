@@ -3,7 +3,7 @@ import { FaLinkedin, FaInstagramSquare, FaFacebookSquare } from "react-icons/fa"
 
 export default function Footer() {
     return (
-        <footer className="bg-[#292724] text-zinc-400">
+        <footer className="bg-stone-900 text-zinc-400">
             {/* Conteúdo Principal */}
             <div className="container mx-auto px-6 py-12">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
@@ -119,7 +119,7 @@ export default function Footer() {
             </div>
 
             {/* Barra inferior — informação legal */}
-            <div className="border-t border-[#3a3734]">
+            <div className="border-t border-stone-700">
                 <div className="container mx-auto px-6 py-4 flex items-center justify-center gap-2 text-xs text-slate-500">
                     <span>&copy; {new Date().getFullYear()} Syslobo, Lda. Todos os direitos reservados.</span>
                 </div>

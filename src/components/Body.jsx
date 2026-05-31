@@ -12,7 +12,10 @@ import { FaLinkedin, FaInstagram, FaFacebook } from "react-icons/fa";
 import { RiTeamLine } from "react-icons/ri";
 import SysloboLogo from "@/assets/SysloboLogo.png";
 // eslint-disable-next-line no-unused-vars
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import PortaBody from "@/assets/Home/PortaBody.JPEG";
+import { TestTubeDiagonalIcon } from "lucide-react";
+
 
 
 
@@ -20,46 +23,46 @@ import { motion } from 'framer-motion';
 const projetos = [
     {
         id: 1,
-        category: "Portões",
-        title: "Portões Metálicos Personalizados",
-        description: "Fabricação e instalação de portões automáticos e manuais em aço ou ferro com acabamento anti-corrosivo.",
+        category: "Portas",
+        title: "Portas Metálicas Personalizadas",
+        description: "Fabricação e instalação de portas automáticas e manuais em aço ou ferro com acabamento anti-corrosivo.",
         images: [ex1, ex2, ex3],
         featured: true,
     },
     {
         id: 2,
-        category: "Grades",
-        title: "Grades de Segurança para Janelas",
-        description: "Grades sob medida, com design moderno e sistema de abertura com trava de segurança.",
-        images: [ex2, ex1, ex3],
-    },
-    {
-        id: 3,
-        category: "Estruturas",
-        title: "Estruturas Metálicas para Coberturas",
-        description: "Projetos e execução de estruturas metálicas para galpões, varandas e pergolados resistentes.",
-        images: [ex3, ex1, ex2],
-    },
-    {
-        id: 4,
-        category: "Portões",
-        title: "Portão Industrial Automatizado",
-        description: "Portão de correr em perfil metálico com motorização e comando remoto.",
-        images: [ex1, ex3, ex2],
-    },
-    {
-        id: 5,
         category: "Janelas",
         title: "Caixilharia em Alumínio",
         description: "Janelas de correr em alumínio termolacado com vidro duplo e corte térmico.",
         images: [ex2, ex3, ex1],
     },
     {
-        id: 6,
-        category: "Estores",
-        title: "Estores Exteriores com Automatismo",
-        description: "Estores de lâminas em alumínio com motor e sensor de vento integrado.",
+        id: 3,
+        category: "Portões",
+        title: "Portão Industrial Automatizado",
+        description: "Portão de correr em perfil metálico com motorização e comando remoto.",
+        images: [ex1, ex3, ex2],
+    },
+    {
+        id: 4,
+        category: "Fachadas",
+        title: "Fachada Metálica em Alumínio",
+        description: "Revestimento de fachada em perfis de alumínio anodizado com acabamento personalizado.",
         images: [ex3, ex2, ex1],
+    },
+    {
+        id: 5,
+        category: "Grades",
+        title: "Grades de Segurança para Janelas",
+        description: "Grades sob medida, com design moderno e sistema de abertura com trava de segurança.",
+        images: [ex2, ex1, ex3],
+    },
+    {
+        id: 6,
+        category: "Coberturas",
+        title: "Cobertura Metálica para Garagem",
+        description: "Projetos e execução de coberturas e pérgolas metálicas para garagens, terraços e espaços exteriores.",
+        images: [ex3, ex1, ex2],
     },
 ];
 
@@ -67,7 +70,7 @@ const servicos = [
     {
         id: 1,
         title: 'Portas',
-        image: ex1,
+        image: PortaBody,
     },
     {
         id: 2,
@@ -81,7 +84,7 @@ const servicos = [
     },
     {
         id: 4,
-        title: 'Estores',
+        title: 'Fachadas',
         image: ex1,
     },
     {
@@ -91,9 +94,41 @@ const servicos = [
     },
     {
         id: 6,
-        title: 'Estruturas Metálicas',
+        title: 'Coberturas',
         image: ex3,
     },
+];
+
+// Per-card corner accent line configs
+const accentConfigs = [
+    // Portas — top-left corner, expand right + down
+    [
+        "absolute top-0 left-0 h-0.5 bg-dark-golden transition-all duration-500 w-0 group-hover:w-full",
+        "absolute top-0 left-0 w-0.5 bg-dark-golden transition-all duration-500 h-0 group-hover:h-full",
+    ],
+    // Janelas — top-center, expand both sides
+    [
+        "absolute top-0 inset-x-0 h-0.5 bg-dark-golden transition-all duration-500 scale-x-0 group-hover:scale-x-100 origin-center",
+    ],
+    // Portões — top-right corner, expand left + down
+    [
+        "absolute top-0 right-0 h-0.5 bg-dark-golden transition-all duration-500 w-0 group-hover:w-full",
+        "absolute top-0 right-0 w-0.5 bg-dark-golden transition-all duration-500 h-0 group-hover:h-full",
+    ],
+    // Fachadas — bottom-left corner, expand right + up
+    [
+        "absolute bottom-0 left-0 h-0.5 bg-dark-golden transition-all duration-500 w-0 group-hover:w-full",
+        "absolute bottom-0 left-0 w-0.5 bg-dark-golden transition-all duration-500 h-0 group-hover:h-full",
+    ],
+    // Grades — bottom-center, expand both sides
+    [
+        "absolute bottom-0 inset-x-0 h-0.5 bg-dark-golden transition-all duration-500 scale-x-0 group-hover:scale-x-100 origin-center",
+    ],
+    // Coberturas — bottom-right corner, expand left + up
+    [
+        "absolute bottom-0 right-0 h-0.5 bg-dark-golden transition-all duration-500 w-0 group-hover:w-full",
+        "absolute bottom-0 right-0 w-0.5 bg-dark-golden transition-all duration-500 h-0 group-hover:h-full",
+    ],
 ];
 
 const stats = [
@@ -123,6 +158,24 @@ const razoes = [
         icon: <HiOutlineWrenchScrewdriver className="w-7 h-7 text-golden" />,
         title: "Feito à Medida",
         desc: "Cada projeto é único. Fabricamos e instalamos de acordo com as suas necessidades.",
+    },
+];
+
+const testimonials = [
+    {
+        quote: "Trabalho impecável, entrega no prazo e com acabamento de excelente qualidade. Recomendo sem hesitar.",
+        author: "João M.",
+        since: "Cliente desde 2019",
+    },
+    {
+        quote: "A Syslobo transformou a entrada da minha casa com um portão à medida. Profissionais de excelência do início ao fim.",
+        author: "Ana R.",
+        since: "Cliente desde 2021",
+    },
+    {
+        quote: "Qualidade de fabrico que raramente se encontra. As fachadas e janelas ficaram com um acabamento perfeito.",
+        author: "Carlos F.",
+        since: "Cliente desde 2023",
     },
 ];
 
@@ -163,7 +216,7 @@ function ProjectTile({ projeto, onClick, className = "", index = 0 }) {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
             onClick={onClick}
-            className={`group relative overflow-hidden cursor-pointer bg-[#161618] border border-zinc-800 hover:border-zinc-400 transition-all duration-500 ${className}`}
+            className={`group relative overflow-hidden cursor-pointer bg-stone-950 border border-zinc-800 hover:border-zinc-400 transition-all duration-500 ${className}`}
         >
             {/* Photo — Grayscale at rest, full color on hover */}
             <img
@@ -173,7 +226,7 @@ function ProjectTile({ projeto, onClick, className = "", index = 0 }) {
             />
 
             {/* Heavy gradient at the bottom to ensure text readability */}
-            <div className="absolute inset-0 bg-~linear-to-t from-[#0a0a0c] via-[#0a0a0c]/40 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-90" />
+            <div className="absolute inset-0 bg-~linear-to-t from-stone-950 via-stone-950/40 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-90" />
 
             {/* Category pill — Sharp, blueprint style */}
             <div className="absolute top-4 left-4">
@@ -198,6 +251,10 @@ export default function Body() {
     const [selectedProjeto, setSelectedProjeto] = useState(null);
 
     const imageRefs = useRef([]);
+    const scrollRef = useRef(null);
+    // eslint-disable-next-line no-unused-vars
+    const isTeleporting = useRef(false);
+    const COPIES = 51;
 
     const closeModal = useCallback(() => setSelectedProjeto(null), []);
 
@@ -250,13 +307,56 @@ export default function Body() {
         };
     }, [selected, close, prev, next]);
  
+    const handleScroll = useCallback(() => {
+        if (!scrollRef.current || !projeto) return;
+        const el = scrollRef.current;
+        const count = projeto.images.length;
+        const itemH = el.scrollHeight / (count * COPIES);
+        if (itemH === 0) return;
+        const centerPos = el.scrollTop + el.clientHeight / 2;
+        const idx = Math.floor(centerPos / itemH);
+        setActiveImg(((idx % count) + count) % count);
+    }, [projeto, COPIES]);
+
+    const goToImage = useCallback((i) => {
+        if (!scrollRef.current || !projeto) return;
+        const el = scrollRef.current;
+        const count = projeto.images.length;
+        const itemH = el.scrollHeight / (count * COPIES);
+        const currentIdx = Math.round(el.scrollTop / itemH);
+        const currentCycle = Math.floor(currentIdx / count);
+        const imageTop = (currentCycle * count + i) * itemH;
+        const centeredTop = imageTop + itemH / 2 - el.clientHeight / 2;
+        el.scrollTo({ top: centeredTop, behavior: 'smooth' });
+        setActiveImg(i);
+    }, [projeto, COPIES]);
+
+    useEffect(() => {
+        if (!projeto || !scrollRef.current) return;
+        const el = scrollRef.current;
+        const count = projeto.images.length;
+        requestAnimationFrame(() => {
+            const itemH = el.scrollHeight / (count * COPIES);
+            const middleStart = Math.floor(COPIES / 2) * count * itemH;
+            el.scrollTop = middleStart + itemH / 2 - el.clientHeight / 2;
+        });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [projeto?.id]);
+
+
     const openProject = (id) => { setSelected(id); setActiveImg(0); imageRefs.current = []; };
+
+    const [activeQuote, setActiveQuote] = useState(0);
+    useEffect(() => {
+        const t = setInterval(() => setActiveQuote(q => (q + 1) % testimonials.length), 5000);
+        return () => clearInterval(t);
+    }, []);
 
     return (
         <>
         
         {/* SERVIÇOS */}
-         <section id="servicos" className="bg-[#e5e2dc] py-20">
+         <section id="servicos" className="bg-stone-200 py-20">
             <div className="container mx-auto px-6">
  
                 {/* Header */}
@@ -279,18 +379,18 @@ export default function Body() {
                 </div>
  
                 {/* Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[#c5c2bc]">
-                    {servicos.map((servico) => (
+                <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-px bg-stone-300">
+                    {servicos.map((servico, i) => (
                         <a
                             key={servico.id}
                             href="/servicos"
-                            className="group relative overflow-hidden aspect-4/3 bg-[#dddad5] block"
+                            className="group relative overflow-hidden aspect-square sm:aspect-4/3 bg-stone-200 block"
                         >
                             {/* Photo */}
                             <img
                                 src={servico.image}
                                 alt={servico.title}
-                                className="absolute inset-0 w-full h-full object-cover transition-all duration-500 group-hover:grayscale-0 group-hover:opacity-80 group-hover:scale-105"
+                                className="absolute inset-0 w-full h-full object-cover transition-all duration-500 group-hover:grayscale-0 group-hover:opacity-80 group-hover:scale-105 aspect-square sm:aspect-auto"
                             />
  
                             {/* Bottom gradient always visible */}
@@ -308,8 +408,10 @@ export default function Body() {
                                 </span>
                             </div>
  
-                            {/* Amber top-left corner accent on hover */}
-                            <div className="absolute top-0 left-0 w-0 h-0.5 bg-golden transition-all duration-300 group-hover:w-full" />
+                            {/* Per-card corner accent lines */}
+                            {accentConfigs[i]?.map((cls, j) => (
+                                <div key={j} className={cls} />
+                            ))}
                         </a>
                     ))}
                 </div>
@@ -318,7 +420,7 @@ export default function Body() {
         </section>
 
         {/* SOBRE NÓS */}
-      <section className="relative w-full min-h-200 flex items-center justify-center py-20 bg-[#2a2826]">
+      <section className="relative w-full min-h-200 flex items-center justify-center py-20 bg-stone-800">
       {/* Background with simple darkened image */}
       <div className="absolute inset-0 z-0">
         <img 
@@ -326,10 +428,10 @@ export default function Body() {
           alt="Workshop" 
           className="w-full h-full object-cover opacity-20 grayscale"
         />
-        <div className="absolute inset-0 bg-[#2a2826]/70"></div>
+        <div className="absolute inset-0 bg-stone-800/70"></div>
       </div>
 
-      <div className="relative z-10 container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+      <div className="relative z-10 container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
         
         {/* Left Side: Content & Stats */}
         <div className="text-white space-y-12">
@@ -338,7 +440,7 @@ export default function Body() {
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 1.2, ease: "easeOut", delay: 0.3 }}
-              className="text-6xl font-black uppercase tracking-tighter text-white"
+              className="text-4xl sm:text-5xl md:text-6xl font-black uppercase tracking-tighter text-white"
             >
               Sobre Nós
             </motion.h2>
@@ -369,11 +471,11 @@ export default function Body() {
 
         {/* Right Side: The Main Plaque */}
         <div className="w-full flex justify-center lg:justify-end">
-          <div className="relative w-full max-w-md bg-[#343230] border-2 border-[#454340] p-12 shadow-[20px_20px_0px_0px_rgba(0,0,0,0.2)] overflow-visible">
+          <div className="relative w-full max-w-md bg-stone-700 border-2 border-stone-700 p-6 sm:p-10 md:p-12 shadow-[20px_20px_0px_0px_rgba(0,0,0,0.2)] overflow-visible">
             
             {/* Structural Detail: Corner Bolts */}
             {['top-4 left-4', 'top-4 right-4', 'bottom-4 left-4', 'bottom-4 right-4'].map((s) => (
-              <div key={s} className={`absolute ${s} w-4 h-4 rounded-full bg-[#454340] shadow-inner border border-[#555350]`}></div>
+              <div key={s} className={`absolute ${s} w-4 h-4 rounded-full bg-stone-700 shadow-inner border border-stone-600`}></div>
             ))}
 
             <div className="flex flex-col items-center overflow-visible">
@@ -410,11 +512,11 @@ export default function Body() {
       </div>
     </section>  
         {/* Stats, Quote & Reasons */}
-        <section className="bg-[#d0cdc7] py-20">
+        <section className="bg-stone-300 py-15">
             <div className="container mx-auto px-6">
  
                 {/* Stats bar */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 border-t border-golden/40">
+                <div className="grid grid-cols-2 lg:grid-cols-4 border-t border-dark-golden">
                     {stats.map((stat, i) => (
                         <motion.div
                             key={i}
@@ -422,7 +524,7 @@ export default function Body() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.6, delay: i * 0.1 }}
-                            className="py-10 px-6 border-b border-r border-[#c5c2bc] last:border-r-0 nth-2:border-r-0 lg:nth-2:border-r lg:nth-4:border-r-0"
+                            className="py-10 px-6 border-b border-r border-stone-300 last:border-r-0 nth-2:border-r-0 lg:nth-2:border-r lg:nth-4:border-r-0 flex flex-col items-center text-center"
                         >
                             <div
                                 className="text-5xl font-black tracking-tighter text-zinc-900"
@@ -437,24 +539,62 @@ export default function Body() {
                     ))}
                 </div>
  
-                {/* Pull quote */}
-                <motion.blockquote
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8, delay: 0.2 }}
-                    className="my-16 border-l-2 border-golden pl-6 max-w-2xl"
-                >
-                    <p className="text-xl text-zinc-700 font-light italic leading-relaxed">
-                        "Trabalho impecável, entrega no prazo e com acabamento de excelente qualidade. Recomendo sem hesitar."
-                    </p>
-                    <footer className="mt-3 text-xs font-bold uppercase tracking-[0.15em] text-zinc-500">
-                        João M. — Cliente desde 2019
-                    </footer>
-                </motion.blockquote>
+                {/* Testimonials Carousel */}
+                <div className="my-16 flex flex-col items-center">
+                    <div className="relative w-full max-w-2xl mx-auto">
+
+                        {/* Quote mark */}
+                        <div className="text-center mb-4">
+                            <span className="text-6xl leading-none text-golden/30 font-serif select-none">"</span>
+                        </div>
+
+                        {/* Sliding quote */}
+                        <div className="overflow-hidden">
+                            <AnimatePresence mode="wait">
+                                <motion.blockquote
+                                    key={activeQuote}
+                                    initial={{ opacity: 0, x: 24 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: -24 }}
+                                    transition={{ duration: 0.45, ease: "easeInOut" }}
+                                    className="text-center px-10"
+                                >
+                                    <p className="text-xl text-zinc-700 font-light italic leading-relaxed">
+                                        "{testimonials[activeQuote].quote}"
+                                    </p>
+                                    <footer className="mt-6 flex flex-col items-center gap-1">
+                                        <span className="w-6 h-px bg-golden inline-block" />
+                                        <span className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-900">
+                                            {testimonials[activeQuote].author}
+                                        </span>
+                                        <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-zinc-400">
+                                            {testimonials[activeQuote].since}
+                                        </span>
+                                    </footer>
+                                </motion.blockquote>
+                            </AnimatePresence>
+                        </div>
+                    </div>
+
+                    {/* Dots */}
+                    <div className="flex items-center gap-2 mt-8">
+                        {testimonials.map((_, i) => (
+                            <button
+                                key={i}
+                                onClick={() => setActiveQuote(i)}
+                                className={`transition-all duration-300 rounded-none ${
+                                    i === activeQuote
+                                        ? 'w-6 h-1.5 bg-golden'
+                                        : 'w-1.5 h-1.5 bg-zinc-400 hover:bg-zinc-600'
+                                }`}
+                                aria-label={`Testemunho ${i + 1}`}
+                            />
+                        ))}
+                    </div>
+                </div>
  
                 {/* Reasons row */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 lg:divide-x divide-[#c5c2bc] border border-[#c5c2bc]">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 divide-stone-400 border-b border-dark-golden">
                     {razoes.map((r, i) => (
                         <motion.div
                             key={i}
@@ -462,9 +602,9 @@ export default function Body() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: i * 0.1 }}
-                            className="p-8 flex flex-col gap-4 group hover:bg-[#d5d2cc] transition-colors duration-300"
+                            className="p-8 flex flex-col items-center text-center gap-4 group hover:bg-stone-300 transition-colors duration-300"
                         >
-                            <div className="w-12 h-12 border border-[#c5c2bc] group-hover:border-golden/50 flex items-center justify-center transition-colors duration-300">
+                            <div className="w-12 h-12 border border-stone-300 group-hover:border-golden/50 flex items-center justify-center transition-colors duration-300">
                                 {r.icon}
                             </div>
                             <div>
@@ -483,7 +623,7 @@ export default function Body() {
         </section>
 
         {/* GALERIA */}
-        <section id="galeria" className="bg-[#dddad5] py-24">
+        <section id="galeria" className="bg-stone-200 py-24">
             <div className="container mx-auto px-6">
 
                 {/* Header */}
@@ -492,7 +632,7 @@ export default function Body() {
                         <p className="text-golden text-xs font-bold uppercase tracking-[0.3em] mb-3">
                             Portfólio
                         </p>
-                        <h2 className="text-5xl md:text-6xl font-black uppercase tracking-tighter text-zinc-900">
+                        <h2 className="text-4xl sm:text-5xl md:text-6xl font-black uppercase tracking-tighter text-zinc-900">
                             Galeria
                         </h2>
                     </div>
@@ -522,7 +662,7 @@ export default function Body() {
                                 <img
                                     src={p.images[0]}
                                     alt={p.title}
-                                    className="w-full aspect-3/2 object-cover transition-all duration-700 group-hover:scale-105"
+                                    className="w-full aspect-video sm:aspect-3/2 object-cover transition-all duration-700 group-hover:scale-105"
                                 />
 
                                 {/* Corner arrow indicator */}
@@ -564,41 +704,34 @@ export default function Body() {
                     className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4 lg:p-12"
                     onClick={close}
                 >
-                    {/* Navigation Buttons */}
-                    <button onClick={prev} className="absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-[#161618] border border-zinc-800 hover:border-white flex items-center justify-center text-zinc-400 hover:text-white transition-all duration-300">←</button>
-                    <button onClick={next} className="absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-[#161618] border border-zinc-800 hover:border-white flex items-center justify-center text-zinc-400 hover:text-white transition-all duration-300">→</button>
-                    <button onClick={close} className="absolute top-6 right-6 lg:top-12 lg:right-12 z-10 w-10 h-10 bg-[#161618] border border-zinc-800 hover:border-white flex items-center justify-center text-zinc-500 hover:text-white transition-all duration-300">✕</button>
-
                     <div
-                        className="flex flex-col lg:flex-row w-full max-w-7xl h-full max-h-[85vh] bg-[#0a0a0c] border border-zinc-800 shadow-2xl"
+                        className="flex flex-col lg:flex-row w-full max-w-7xl h-full max-h-[85vh] bg-stone-950 border border-zinc-800 shadow-2xl"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        {/* Images Scroll Area */}
+                        {/* Ferris Wheel Infinite Scroll */}
                         <div
-                            className="flex-1 overflow-y-auto bg-black"
-                            style={{ scrollbarWidth: "none" }}
-                            onScroll={(e) => {
-                                const container = e.currentTarget;
-                                const scrollTop = container.scrollTop;
-                                let closest = 0;
-                                let minDist = Infinity;
-                                imageRefs.current.forEach((el, idx) => {
-                                    if (!el) return;
-                                    const dist = Math.abs(el.offsetTop - scrollTop);
-                                    if (dist < minDist) { minDist = dist; closest = idx; }
-                                });
-                                setActiveImg(closest);
-                            }}
+                            ref={scrollRef}
+                            className="flex-1 overflow-y-scroll bg-stone-950"
+                            style={{ scrollbarWidth: 'none' }}
+                            onScroll={handleScroll}
                         >
-                            <div className="flex flex-col gap-1">
-                                {projeto.images.map((img, i) => (
-                                    <img key={i} ref={(el) => { imageRefs.current[i] = el; }} src={img} alt={`${projeto.title} ${i + 1}`} className="w-full object-cover" />
-                                ))}
-                            </div>
+                            {Array.from({ length: COPIES }, () => projeto.images).flat().map((img, i) => (
+                                <div
+                                    key={i}
+                                    style={{ flexShrink: 0, padding: '8px 20px' }}
+                                    className="flex items-center justify-center"
+                                >
+                                    <img
+                                        src={img}
+                                        alt={`${projeto.title} ${(i % projeto.images.length) + 1}`}
+                                        className="w-full object-cover aspect-video"
+                                    />
+                                </div>
+                            ))}
                         </div>
 
                         {/* Dark Sidebar */}
-                        <div className="w-full lg:w-80 flex flex-col border-t lg:border-t-0 lg:border-l border-zinc-800 shrink-0 bg-[#0f0f11]">
+                        <div className="w-full lg:w-80 flex flex-col border-t lg:border-t-0 lg:border-l border-zinc-800 shrink-0 bg-stone-950">
                             <div className="p-8 border-b border-zinc-800">
                                 <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white bg-zinc-800 px-3 py-1">
                                     {projeto.category}
@@ -617,8 +750,8 @@ export default function Body() {
                                     <img
                                         key={i}
                                         src={img}
-                                        onClick={() => imageRefs.current[i]?.scrollIntoView({ behavior: "smooth", block: "center" })}
-                                        className={`w-16 lg:w-full lg:max-h-32 object-cover cursor-pointer shrink-0 transition-all duration-300 border-2 ${
+                                        onClick={() => goToImage(i)}
+                                        className={`w-20 md:w-28 lg:w-full lg:max-h-32 object-cover cursor-pointer shrink-0 transition-all duration-300 border-2 ${
                                             i === activeImg ? "border-golden opacity-100" : "border-transparent opacity-30 hover:opacity-100 grayscale"
                                         }`}
                                     />
@@ -631,7 +764,7 @@ export default function Body() {
         </section>
 
         {/* CONTACTO */}
-        <section id="contacto" className="bg-[#d2cfca] py-24">
+        <section id="contacto" className="bg-stone-400/50 py-24">
             <div className="container mx-auto px-6">
 
                 {/* Header */}
@@ -640,24 +773,20 @@ export default function Body() {
                         <p className="text-golden text-xs font-bold uppercase tracking-[0.3em] mb-3">
                             Fale Connosco
                         </p>
-                        <h2 className="text-5xl md:text-6xl font-black uppercase tracking-tighter text-zinc-900">
+                        <h2 className="text-4xl sm:text-5xl md:text-6xl font-black uppercase tracking-tighter text-zinc-900">
                             Entre em Contacto
                         </h2>
                     </div>
                 </div>
 
-                <p className="text-zinc-600 text-sm leading-relaxed max-w-md mb-6">
-                    Estamos disponíveis para responder às suas questões e ajudá-lo com o seu projeto.
-                </p>
-
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start" >
 
                     {/* Left — Contact Info */}
-                    <div className="space-y-8">
-                        <div className="divide-y divide-[#c0bdb7]">
+                    <div className="space-y-8 lg:pr-32 pb-8 lg:pb-0">
+                        <div className="divide-y divide-zinc-400/50">
                             {contactDetails.map((item, i) => (
                                 <div key={i} className="flex items-start gap-5 py-5 first:pt-0">
-                                    <div className="w-10 h-10 border border-[#c0bdb7] flex items-center justify-center shrink-0">
+                                    <div className="w-10 h-10 border border-zinc-400/50 flex items-center justify-center shrink-0">
                                         {item.icon}
                                     </div>
                                     <div className="mt-1">
@@ -670,7 +799,7 @@ export default function Body() {
 
                         {/* Social Links */}
                         <div>
-                            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 block mb-4">
+                            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 block mb-6">
                                 Redes Sociais
                             </span>
                             <div className="flex gap-3">
@@ -679,7 +808,7 @@ export default function Body() {
                                         key={i}
                                         href={social.href}
                                         aria-label={social.label}
-                                        className="w-10 h-10 border border-[#c0bdb7] flex items-center justify-center text-dark-golden hover:bg-dark-golden hover:border-dark-golden hover:text-white transition-colors duration-200"
+                                        className="w-10 h-10 border border-zinc-400/50 flex items-center justify-center text-dark-golden/50 hover:bg-dark-golden hover:border-dark-golden hover:text-white transition-colors duration-200"
                                     >
                                         <social.icon className="w-4 h-4" />
                                     </a>
@@ -688,30 +817,51 @@ export default function Body() {
                         </div>
                     </div>
 
-                    {/* Right — CTA Card */}
+                    {/* Right — CTA Enhanced */}
                     <motion.div
                         initial={{ opacity: 0, x: 20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.5 }}
+                        className="lg:pl-16 pt-0"
                     >
-                        <div className="bg-zinc-900 p-8 sm:p-10">
-                            <p className="text-golden text-xs font-bold uppercase tracking-[0.3em] mb-3">Peça um Orçamento</p>
-                            <h3 className="text-3xl sm:text-4xl font-black uppercase tracking-tighter text-white mb-4">
-                                Pronto para começar o seu projeto?
-                            </h3>
-                            <p className="text-zinc-400 text-sm leading-relaxed mb-8">
-                                Preencha o nosso formulário de contacto e entraremos em contacto consigo brevemente. Resposta garantida em 24 horas úteis.
-                            </p>
-                            <div className="flex items-center justify-between gap-4">
+                        <div className="relative bg-stone-300 border border-stone-300 p-8 md:p-10 shadow-lg overflow-hidden">
+
+
+                            {/* Watermark logo (kept but cleaner) */}
+                            <img
+                                src={SysloboLogo}
+                                alt=""
+                                aria-hidden="true"
+                                className="absolute bottom-5 right-1 md:bottom-10 md:right-10 h-32 w-32 md:h-44 md:w-44 object-contain pointer-events-none select-none"
+                            />
+
+                            <div className="relative z-10 flex flex-col">
+
+                                <p className="text-golden text-xs font-bold uppercase tracking-[0.3em] mb-4">
+                                    Peça um Orçamento
+                                </p>
+
+                                <h3 className="text-3xl sm:text-4xl font-bold uppercase tracking-tight text-zinc-900 mb-4 leading-tight">
+                                    Pronto para começar o seu projeto?
+                                </h3>
+
+                                {/* Benefits */}
+                                <div className="space-y-2 mb-8 text-sm text-zinc-700">
+                                    <p>✔ Acompanhamento personalizado</p>
+                                    <p>✔ Resposta rápida</p>
+                                    <p>✔ Orçamento gratuito</p>
+                                </div>
+
+                                {/* Strong CTA button */}
                                 <a
                                     href="/orcamento"
-                                    className="group inline-flex items-center gap-3 bg-golden text-zinc-900 px-6 py-4 font-bold text-sm uppercase tracking-wider hover:bg-white transition-colors duration-200"
+                                    className="group inline-flex items-center justify-center gap-2 bg-zinc-900 hover:bg-golden px-4 py-3 sm:px-6 sm:py-4 font-bold text-xs sm:text-sm uppercase tracking-widest text-white hover:text-zinc-900 transition-all duration-300 shadow-md self-start"
                                 >
                                     Pedir Orçamento
                                     <HiArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
                                 </a>
-                                <img src={SysloboLogo} alt="Syslobo" className="h-24" />
+
                             </div>
                         </div>
                     </motion.div>

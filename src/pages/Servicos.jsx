@@ -59,18 +59,18 @@ const servicos = [
         image: ex3,
     },
     {
-        id: "estores",
-        label: "Estores",
-        title: "Estores e Proteção Solar",
-        tagline: "Conforto visual e eficiência energética.",
+        id: "fachadas",
+        label: "Fachadas",
+        title: "Fachadas Metálicas",
+        tagline: "Estética e funcionalidade na envolvente do edifício.",
         description:
-            "Instalamos estores exteriores em alumínio com laminas orientáveis, ideais para controlo de luz e temperatura. Disponíveis em versão manual ou motorizada, com sensor de vento e temporizador. Solução que combina estética com funcionalidade.",
-        materials: ["Alumínio lacado", "Alumínio anodizado"],
+            "Projetamos e instalamos fachadas metálicas em alumínio e aço para edifícios residenciais, comerciais e industriais. Soluções com perfis de alto desempenho, acabamentos personalizados e integração arquitetónica. Combina proteção climática com identidade visual marcante.",
+        materials: ["Alumínio lacado", "Alumínio anodizado", "Aço Corten", "Compósito"],
         includes: [
-            "Manual ou motorizado (Somfy)",
-            "Sensor de vento opcional",
-            "Caixas de estore embutidas ou salientes",
-            "Ampla gama de cores RAL",
+            "Projeto e desenho técnico",
+            "Perfis e painéis à medida",
+            "Montagem e fixação em obra",
+            "Acabamento e tratamento anti-corrosivo",
         ],
         image: ex1,
     },
@@ -91,15 +91,15 @@ const servicos = [
         image: ex2,
     },
     {
-        id: "estruturas",
-        label: "Estruturas",
-        title: "Estruturas Metálicas",
-        tagline: "Engenharia e precisão para grandes projetos.",
+        id: "coberturas",
+        label: "Coberturas",
+        title: "Coberturas e Pérgolas",
+        tagline: "Proteção e design no espaço exterior.",
         description:
-            "Projetamos e executamos estruturas metálicas para coberturas, galpões industriais, varandas, pérgolas e escadas. Cada estrutura é calculada e fabricada com rigor técnico, garantindo resistência e durabilidade a longo prazo.",
-        materials: ["Aço estrutural", "Alumínio", "Aço inox"],
+            "Fabricamos e instalamos coberturas metálicas para garagens, terraços, pátios e espaços industriais. Desde marquises simples a pérgolas com lâminas orientáveis, cada solução é pensada para combinar funcionalidade, durabilidade e estética.",
+        materials: ["Aço galvanizado", "Alumínio", "Aço inox"],
         includes: [
-            "Projeto e cálculo incluídos",
+            "Projeto e cálculo estrutural",
             "Fabrico em oficina própria",
             "Montagem e fixação em obra",
             "Galvanização ou pintura epoxy",
@@ -126,7 +126,7 @@ function MaterialChip({ label }) {
 
 export default function Servicos() {
 
- const [activeSection, setActiveSection] = useState("portas");
+    const [activeSection, setActiveSection] = useState("portas");
     const sectionRefs = useRef({});
     const sidebarRef = useRef(null);
     const [sidebarTop, setSidebarTop] = useState(96);
@@ -361,10 +361,10 @@ export default function Servicos() {
                             Qualidade assegurada
                         </p>
                         <h2 className="text-2xl font-black uppercase tracking-tight text-white">
-                            Os Nossos Fornecedores
+                            Os Nossos Parceiros
                         </h2>
                         <p className="mt-3 text-sm text-stone-200 max-w-md mx-auto">
-                            Trabalhamos com fornecedores de referência para garantir materiais de primeira qualidade em cada projeto.
+                            Os nossos parceiros de referência ajudam a garantir materiais de primeira qualidade em cada projeto.
                         </p>
                     </div>
                     <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-y lg:divide-y-0 divide-stone-600 border border-stone-600">

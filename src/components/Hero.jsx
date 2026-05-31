@@ -1,4 +1,4 @@
-import oficina from "@/assets/oficina.jpg"
+import oficina from "@/assets/Home/Hero1.png"
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion"
 
@@ -13,10 +13,10 @@ export default function Hero() {
             />
 
             {/* Dark overlay with gradient */}
-            <div className="absolute inset-0 bg-linear-to-r from-[#0a0a0c]/90 via-[#0a0a0c]/70 to-[#0a0a0c]/40" />
+            <div className="absolute inset-0 bg-linear-to-r from-stone-950/90 via-stone-950/70 to-stone-950/40" />
 
             {/* Content */}
-            <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-20 py-32 pt-40">
+            <div className="relative z-10 w-full max-w-7xl mx-auto py-20 pt-28 sm:py-32 sm:pt-40">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -41,7 +41,7 @@ export default function Hero() {
 
                     {/* Subtitle */}
                     <p className="text-lg md:text-xl text-zinc-300 leading-relaxed mb-10 max-w-xl">
-                        Portões, grades, estruturas metálicas e caixilharia — tudo feito à medida, com a qualidade e rigor de mais de 50 anos de experiência.
+                        Portas, janelas, portões, grades, fachadas e coberturas — tudo feito à medida, com a qualidade e rigor de mais de 50 anos de experiência.
                     </p>
 
                     {/* CTAs */}
@@ -53,7 +53,7 @@ export default function Hero() {
                     >
                         <a
                             href="/orcamento"
-                            className="px-8 py-3.5 bg-golden hover:bg-golden/90 text-[#0a0a0c] font-bold text-sm uppercase tracking-wide transition-colors duration-300"
+                            className="px-8 py-3.5 bg-golden hover:bg-golden/90 text-stone-950 font-bold text-sm uppercase tracking-wide transition-colors duration-300"
                         >
                             Pedir Orçamento
                         </a>
