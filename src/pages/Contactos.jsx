@@ -1,5 +1,6 @@
 import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
+import { Link } from "react-router-dom"
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion"
 import { MdOutlineEmail } from "react-icons/md"
@@ -145,6 +146,7 @@ export default function Contactos() {
           >
             <div className="relative bg-stone-300 border border-stone-300 p-8 md:p-10 shadow-lg overflow-hidden">
 
+<<<<<<< HEAD
               {/* Watermark logo */}
               <img
                 src={SysloboLogo}
@@ -174,10 +176,26 @@ export default function Contactos() {
                 <a
                   href="/orcamento"
                   className="group inline-flex items-center justify-center gap-2 bg-zinc-900 hover:bg-golden px-4 py-3 sm:px-6 sm:py-4 font-bold text-xs sm:text-sm uppercase tracking-widest text-white hover:text-zinc-900 transition-all duration-300 shadow-md self-start"
+=======
+              <div className="flex items-center justify-between gap-4">
+                <Link
+                  to="/orcamento"
+                  className="group inline-flex items-center gap-3 bg-golden text-zinc-900 px-6 py-4 font-bold text-sm uppercase tracking-wider hover:bg-white transition-colors duration-200"
+>>>>>>> 9713e2709b90bfe180075bc884fd9f7b5cffaaa2
                 >
                   Pedir Orçamento
                   <HiArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
+<<<<<<< HEAD
                 </a>
+=======
+                </Link>
+                
+                <img 
+                  src={SysloboLogo} 
+                  alt="Syslobo" 
+                  className="h-24">
+                </img>
+>>>>>>> 9713e2709b90bfe180075bc884fd9f7b5cffaaa2
 
               </div>
             </div>

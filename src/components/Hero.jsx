@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 import oficina from "@/assets/Home/Hero1.png"
+=======
+import oficina from "@/assets/oficina.jpg"
+import { Link } from "react-router-dom"
+>>>>>>> 9713e2709b90bfe180075bc884fd9f7b5cffaaa2
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion"
 
@@ -51,18 +56,24 @@ export default function Hero() {
                         transition={{ duration: 0.6, delay: 0.5 }}
                         className="flex flex-wrap gap-4"
                     >
+<<<<<<< HEAD
                         <a
                             href="/orcamento"
                             className="px-8 py-3.5 bg-golden hover:bg-golden/90 text-stone-950 font-bold text-sm uppercase tracking-wide transition-colors duration-300"
+=======
+                        <Link
+                            to="/orcamento"
+                            className="px-8 py-3.5 bg-golden hover:bg-golden/90 text-[#0a0a0c] font-bold text-sm uppercase tracking-wide transition-colors duration-300"
+>>>>>>> 9713e2709b90bfe180075bc884fd9f7b5cffaaa2
                         >
                             Pedir Orçamento
-                        </a>
-                        <a
-                            href="/galeria"
+                        </Link>
+                        <Link
+                            to="/galeria"
                             className="px-8 py-3.5 border border-white/30 hover:border-white text-white font-semibold text-sm uppercase tracking-wide transition-colors duration-300"
                         >
                             Ver Trabalhos
-                        </a>
+                        </Link>
                     </motion.div>
                 </motion.div>
             </div>

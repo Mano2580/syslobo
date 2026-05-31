@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import { Link } from 'react-router-dom'
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from 'framer-motion'
 import { GoShieldCheck } from 'react-icons/go'
@@ -855,12 +856,12 @@ export default function OrcamentoPage() {
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 mt-2">
-              <a href="/" className="inline-flex items-center justify-center px-6 py-3 bg-zinc-900 text-white text-xs font-bold uppercase tracking-wider hover:bg-zinc-700 transition-colors duration-200">
+              <Link to="/" className="inline-flex items-center justify-center px-6 py-3 bg-zinc-900 text-white text-xs font-bold uppercase tracking-wider hover:bg-zinc-700 transition-colors duration-200">
                 Voltar ao início
-              </a>
-              <a href="/galeria" className="inline-flex items-center justify-center px-6 py-3 border border-stone-200 text-zinc-500 text-xs font-bold uppercase tracking-wider hover:border-zinc-400 hover:text-zinc-900 transition-colors duration-200">
+              </Link>
+              <Link to="/galeria" className="inline-flex items-center justify-center px-6 py-3 border border-stone-200 text-zinc-500 text-xs font-bold uppercase tracking-wider hover:border-zinc-400 hover:text-zinc-900 transition-colors duration-200">
                 Ver galeria
-              </a>
+              </Link>
             </div>
           </motion.div>
         )}

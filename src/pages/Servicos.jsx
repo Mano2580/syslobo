@@ -1,5 +1,6 @@
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import { Link } from 'react-router-dom'
 import { useState, useEffect, useRef } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
@@ -196,12 +197,12 @@ export default function Servicos() {
                         transition={{ duration: 0.7, delay: 0.3 }}
                         className="flex flex-col sm:flex-row gap-3 lg:pb-1"
                     >
-                        <a
-                            href="/contacto"
+                        <Link
+                            to="/contactos"
                             className="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-sm bg-golden text-zinc-900 font-bold text-sm uppercase tracking-wider hover:bg-amber-400 transition-colors duration-200"
                         >
                             Pedir orçamento
-                        </a>
+                        </Link>
                     </motion.div>
                 </div>
             </section>
@@ -254,12 +255,12 @@ export default function Servicos() {
                         ))}
  
                         <div className="mt-8 pt-8 border-t border-stone-400 pl-4 flex flex-col gap-3">
-                            <a
-                                href="/contacto"
+                            <Link
+                                to="/contactos"
                                 className="text-xs font-bold uppercase tracking-wider text-zinc-900 border-b border-golden pb-0.5 self-start hover:scale-105 transition-colors duration-200"
                             >
                                 Pedir orçamento
-                            </a>
+                            </Link>
                         </div>
                     </aside>
  
@@ -407,12 +408,12 @@ export default function Servicos() {
                             </p>
                         </div>
                         <div className="flex flex-col sm:flex-row gap-3 shrink-0">
-                            <a
-                                href="/orcamento"
+                            <Link
+                                to="/orcamento"
                                 className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-sm bg-golden text-zinc-900 font-bold text-sm uppercase tracking-wider hover:bg-amber-400 transition-colors duration-200"
                             >
                                 Pedir orçamento
-                            </a>
+                            </Link>
                         </div>
                     </div>
                     <div className="mt-12 pt-10 border-t border-stone-700 flex flex-wrap gap-6">

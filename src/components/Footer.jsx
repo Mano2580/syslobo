@@ -1,4 +1,5 @@
 
+import { Link } from "react-router-dom";
 import { FaLinkedin, FaInstagramSquare, FaFacebookSquare } from "react-icons/fa";
 
 export default function Footer() {
@@ -32,29 +33,29 @@ export default function Footer() {
                         <h3 className="text-white text-lg font-bold mb-4">Links Úteis</h3>
                         <ul className="space-y-2 text-sm">
                             <li>
-                                <a href="/sobre-nos" className="hover:text-golden transition-colors">
+                                <Link to="/sobre-nos" className="hover:text-golden transition-colors">
                                     Sobre Nós
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="/servicos" className="hover:text-golden transition-colors">
+                                <Link to="/servicos" className="hover:text-golden transition-colors">
                                     Serviços
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="/galeria" className="hover:text-golden transition-colors">
+                                <Link to="/galeria" className="hover:text-golden transition-colors">
                                     Galeria
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="/contactos" className="hover:text-golden transition-colors">
+                                <Link to="/contactos" className="hover:text-golden transition-colors">
                                     Contactos
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="/orcamento" className="hover:text-golden transition-colors">
+                                <Link to="/orcamento" className="hover:text-golden transition-colors">
                                     Pedir Orçamento
-                                </a>
+                                </Link>
                             </li>
                         </ul>
                     </div>
