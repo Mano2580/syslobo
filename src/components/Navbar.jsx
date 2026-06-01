@@ -66,7 +66,7 @@ export default function Navbar () {
         <div className="flex lg:grid lg:grid-cols-6 items-center justify-between py-2 sm:py-4 px-2 mr-4 md:mr-2 md:px-8 xlg:px-16">
           {/* LEFT — Logo */}
           <div className="col-span-1 flex mx-2 lg:mx-auto items-center cursor-pointer">
-            <a href="/" className="flex items-center gap-2">
+            <Link to="/" className="flex items-center gap-2">
               <img
                 src={SysloboLogo}
                 alt=""
@@ -75,7 +75,7 @@ export default function Navbar () {
               <span className="text-2xl sm:text-3xl font-semibold text-black border-b border-golden/50">
               Syslobo
               </span>
-            </a>
+            </Link>
           </div>
 
           {/* CENTER — Desktop Menu */}

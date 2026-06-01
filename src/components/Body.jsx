@@ -101,6 +101,7 @@ const servicos = [
 ];
 
 // Per-card corner accent line configs
+// eslint-disable-next-line no-unused-vars
 const accentConfigs = [
     // Portas — top-left corner, expand right + down
     [
@@ -380,21 +381,12 @@ export default function Body() {
                 </div>
  
                 {/* Grid */}
-<<<<<<< HEAD
-                <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-px bg-stone-300">
-                    {servicos.map((servico, i) => (
-                        <a
-                            key={servico.id}
-                            href="/servicos"
-                            className="group relative overflow-hidden aspect-square sm:aspect-4/3 bg-stone-200 block"
-=======
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[#c5c2bc]">
                     {servicos.map((servico) => (
                         <Link
                             key={servico.id}
                             to="/servicos"
                             className="group relative overflow-hidden aspect-4/3 bg-[#dddad5] block"
->>>>>>> 9713e2709b90bfe180075bc884fd9f7b5cffaaa2
                         >
                             {/* Photo */}
                             <img
@@ -418,17 +410,9 @@ export default function Body() {
                                 </span>
                             </div>
  
-<<<<<<< HEAD
-                            {/* Per-card corner accent lines */}
-                            {accentConfigs[i]?.map((cls, j) => (
-                                <div key={j} className={cls} />
-                            ))}
-                        </a>
-=======
                             {/* Amber top-left corner accent on hover */}
                             <div className="absolute top-0 left-0 w-0 h-0.5 bg-golden transition-all duration-300 group-hover:w-full" />
                         </Link>
->>>>>>> 9713e2709b90bfe180075bc884fd9f7b5cffaaa2
                     ))}
                 </div>
  
@@ -841,7 +825,6 @@ export default function Body() {
                         transition={{ duration: 0.5 }}
                         className="lg:pl-16 pt-0"
                     >
-<<<<<<< HEAD
                         <div className="relative bg-stone-300 border border-stone-300 p-8 md:p-10 shadow-lg overflow-hidden">
 
 
@@ -879,25 +862,6 @@ export default function Body() {
                                     <HiArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
                                 </a>
 
-=======
-                        <div className="bg-zinc-900 p-8 sm:p-10">
-                            <p className="text-golden text-xs font-bold uppercase tracking-[0.3em] mb-3">Peça um Orçamento</p>
-                            <h3 className="text-3xl sm:text-4xl font-black uppercase tracking-tighter text-white mb-4">
-                                Pronto para começar o seu projeto?
-                            </h3>
-                            <p className="text-zinc-400 text-sm leading-relaxed mb-8">
-                                Preencha o nosso formulário de contacto e entraremos em contacto consigo brevemente. Resposta garantida em 24 horas úteis.
-                            </p>
-                            <div className="flex items-center justify-between gap-4">
-                                <Link
-                                    to="/orcamento"
-                                    className="group inline-flex items-center gap-3 bg-golden text-zinc-900 px-6 py-4 font-bold text-sm uppercase tracking-wider hover:bg-white transition-colors duration-200"
-                                >
-                                    Pedir Orçamento
-                                    <HiArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
-                                </Link>
-                                <img src={SysloboLogo} alt="Syslobo" className="h-24" />
->>>>>>> 9713e2709b90bfe180075bc884fd9f7b5cffaaa2
                             </div>
                         </div>
                     </motion.div>
