@@ -56,13 +56,13 @@ const socialLinks = [
 
 export default function Contactos() {
   return (
-    <div className="bg-stone-400/50 min-h-screen">
+    <div className="bg-stone-300/50 min-h-screen">
 
       <Navbar />
 
       {/* Hero Section */}
-      <section className="bg-zinc-900 relative overflow-hidden">
-        <div className="absolute inset-0 bg-linear-to-b from-zinc-900/80 to-zinc-900" />
+      <section className="bg-zinc-800 relative overflow-hidden">
+        <div className="absolute inset-0 bg-linear-to-b from-zinc-800/80 to-zinc-800" />
         <div className="relative container mx-auto px-6 py-28 pt-40 sm:pt-44">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <p className="text-golden text-xs font-bold uppercase tracking-[0.3em] mb-3">Fale Connosco</p>
@@ -144,7 +144,7 @@ export default function Contactos() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="pt-0"
           >
-            <div className="relative bg-stone-300 border border-stone-300 p-8 md:p-10 shadow-lg overflow-hidden">
+            <div className="relative bg-stone-200 border border-stone-300 p-8 md:p-10 shadow-lg overflow-hidden">
 
               {/* Watermark logo */}
               <img
@@ -174,7 +174,7 @@ export default function Contactos() {
                 {/* Strong CTA button */}
                 <a
                   href="/orcamento"
-                  className="group inline-flex items-center justify-center gap-2 bg-zinc-900 hover:bg-golden px-4 py-3 sm:px-6 sm:py-4 font-bold text-xs sm:text-sm uppercase tracking-widest text-white hover:text-zinc-900 transition-all duration-300 shadow-md self-start"
+                  className="group inline-flex items-center justify-center gap-2 bg-zinc-800 hover:bg-golden px-4 py-3 sm:px-6 sm:py-4 font-bold text-xs sm:text-sm uppercase tracking-widest text-white hover:text-zinc-900 transition-all duration-300 shadow-md self-start"
                 >
                   Pedir Orçamento
                   <HiArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />

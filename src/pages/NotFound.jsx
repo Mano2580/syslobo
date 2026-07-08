@@ -4,7 +4,7 @@ import Footer from '../components/Footer'
 
 export default function NotFound() {
   return (
-    <div className="bg-stone-300 min-h-screen flex flex-col">
+    <div className="bg-stone-200 min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1 flex flex-col items-center px-6 pt-40 sm:pt-44 pb-32">
         <div className="text-center">
@@ -15,7 +15,7 @@ export default function NotFound() {
           </p>
           <Link
             to="/"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-zinc-900 text-white text-xs font-bold uppercase tracking-wider hover:bg-zinc-700 transition-colors duration-200"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-zinc-800 text-white text-xs font-bold uppercase tracking-wider hover:bg-zinc-600 transition-colors duration-200"
           >
             Voltar ao início
           </Link>

@@ -88,11 +88,11 @@ function ProjectModal({ projeto, onClose, onPrev, onNext }) {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4 lg:p-12" onClick={onClose}>
 
-            <div className="flex flex-col lg:flex-row w-full max-w-7xl h-full max-h-[85vh] bg-stone-950 border border-zinc-800 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            <div className="flex flex-col lg:flex-row w-full max-w-7xl h-full max-h-[85vh] bg-stone-900 border border-zinc-800 shadow-2xl" onClick={(e) => e.stopPropagation()}>
                 {/* Ferris Wheel Infinite Scroll */}
                 <div
                     ref={scrollRef}
-                    className="flex-1 overflow-y-scroll bg-stone-950"
+                    className="flex-1 overflow-y-scroll bg-stone-900"
                     style={{ scrollbarWidth: 'none' }}
                     onScroll={handleScroll}
                 >
@@ -112,9 +112,9 @@ function ProjectModal({ projeto, onClose, onPrev, onNext }) {
                 </div>
 
                 {/* Sidebar */}
-                <div className="w-full lg:w-80 flex flex-col border-t lg:border-t-0 lg:border-l border-zinc-800 shrink-0 bg-stone-950">
+                <div className="w-full lg:w-80 flex flex-col border-t lg:border-t-0 lg:border-l border-zinc-800 shrink-0 bg-stone-900">
                     <div className="p-8 border-b border-zinc-800">
-                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white bg-zinc-800 px-3 py-1">
+                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white bg-zinc-700 px-3 py-1">
                             {projeto.category}
                         </span>
                         <h3 className="text-white font-black text-xl mt-6 leading-tight uppercase tracking-tight">
@@ -197,16 +197,16 @@ export default function GaleriaPage() {
     const next = useCallback(() => setSelected(filtered[(selectedIndex + 1) % filtered.length].id), [selectedIndex, filtered]);
  
     return (
-        <div className="bg-stone-300 min-h-screen">
+        <div className="bg-stone-200 min-h-screen">
             <Navbar />
 
             {/* ── HERO ── */}
-            <section ref={heroRef} className="relative bg-zinc-900 overflow-hidden">
+            <section ref={heroRef} className="relative bg-zinc-800 overflow-hidden">
                 <img 
                     src={ex1} 
                     alt="Galeria" 
                     className="absolute inset-0 w-full h-full object-cover opacity-20 grayscale" />
-                <div className="absolute inset-0 bg-linear-to-b from-zinc-900/60 to-zinc-900" />
+                <div className="absolute inset-0 bg-linear-to-b from-zinc-800/60 to-zinc-800" />
                 <div className="relative container mx-auto px-6 py-28 pt-40 sm:pt-44 ">
                     <motion.div 
                         initial={{ opacity: 0, y: 20 }} 
@@ -230,7 +230,7 @@ export default function GaleriaPage() {
  
             {/* ── MOBILE FILTER ROW (in-flow when hero visible) ── */}
             {!filterFixed && (
-                <div className="lg:hidden w-full border-b border-stone-400 overflow-x-auto bg-stone-200" style={{ scrollbarWidth: "none" }}>
+                <div className="lg:hidden w-full border-b border-stone-400 overflow-x-auto bg-stone-100" style={{ scrollbarWidth: "none" }}>
                     <div className="flex gap-0 px-6 py-3 w-max">
                         {categorias.map((cat) => (
                             <button
@@ -248,7 +248,7 @@ export default function GaleriaPage() {
             )}
 
             {/* ── MOBILE FILTER ROW (fixed when hero scrolled out) ── */}
-            <div className={`lg:hidden fixed top-0 left-0 w-full z-40 border-b border-stone-400 overflow-x-auto bg-stone-200 transition-transform duration-300 ${filterFixed && showFilter ? 'translate-y-20 sm:translate-y-28' : '-translate-y-full'}`} style={{ scrollbarWidth: "none" }}>
+            <div className={`lg:hidden fixed top-0 left-0 w-full z-40 border-b border-stone-400 overflow-x-auto bg-stone-100 transition-transform duration-300 ${filterFixed && showFilter ? 'translate-y-20 sm:translate-y-28' : '-translate-y-full'}`} style={{ scrollbarWidth: "none" }}>
                 <div className="flex gap-0 px-6 py-3 w-max">
                     {categorias.map((cat) => (
                         <button
@@ -306,7 +306,7 @@ export default function GaleriaPage() {
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 0.35, delay: i * 0.04 }}
                                     onClick={() => setSelected(p.id)}
-                                    className="group relative break-inside-avoid cursor-pointer overflow-hidden bg-stone-100 shadow-sm"
+                                    className="group relative break-inside-avoid cursor-pointer overflow-hidden bg-stone-50 shadow-sm"
                                 >
                                     <img
                                         src={p.images[0]}
@@ -362,7 +362,7 @@ export default function GaleriaPage() {
             </div>
 
             {/* ── CLOSING CTA ── */}
-            <section className="bg-zinc-900 py-20 lg:py-28">
+            <section className="bg-zinc-800 py-20 lg:py-28">
                 <div className="container mx-auto px-6">
                     <div className="flex flex-col lg:flex-row items-center justify-between gap-10">
                         <div>

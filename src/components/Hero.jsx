@@ -13,7 +13,7 @@ export default function Hero() {
             />
 
             {/* Dark overlay with gradient */}
-            <div className="absolute inset-0 bg-linear-to-r from-stone-950/90 via-stone-950/70 to-stone-950/40" />
+            <div className="absolute inset-0 bg-linear-to-r from-stone-900/90 via-stone-900/70 to-stone-900/40" />
 
             {/* Content */}
             <div className="relative z-10 w-full max-w-7xl mx-auto py-20 pt-28 sm:py-32 sm:pt-40">

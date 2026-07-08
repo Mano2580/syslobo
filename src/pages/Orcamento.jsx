@@ -20,9 +20,9 @@ const servicos = [
 ]
  
 const trustItems = [
-    { icon: <GoShieldCheck className="w-5 h-5 text-golden-amber" />, title: "Gratuito e sem compromisso", desc: "Nenhum custo associado ao pedido de orçamento." },
-    { icon: <GoClock className="w-5 h-5 text-golden-amber" />,        title: "Resposta em 24 horas",       desc: "Entramos em contacto no dia útil seguinte." },
-    { icon: <SlLocationPin className="w-5 h-5 text-golden-amber" />,  title: "Visita ao local incluída",   desc: "Se necessário, deslocamo-nos para avaliar o projeto." },
+  { icon: <GoShieldCheck className="w-5 h-5 text-dark-golden" />, title: "Gratuito e sem compromisso", desc: "Nenhum custo associado ao pedido de orçamento." },
+  { icon: <GoClock className="w-5 h-5 text-dark-golden" />,        title: "Resposta em 24 horas",       desc: "Entramos em contacto no dia útil seguinte." },
+  { icon: <SlLocationPin className="w-5 h-5 text-dark-golden" />,  title: "Visita ao local incluída",   desc: "Se necessário, deslocamo-nos para avaliar o projeto." },
 ]
  
 const STEPS = ["Dados", "Projeto", "Confirmação"]
@@ -173,8 +173,7 @@ export default function OrcamentoPage() {
       })
     }
 
-    const outroSelected = form.services.includes('outro')
-    const step1Valid = form.services.length > 0 && (!outroSelected || form.description.trim().length > 0)
+    const step1Valid = form.description.trim().length > 0 || fileNames.length > 0
     const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())
     const step2Valid = form.name.trim() && emailValid && form.phone.trim() && form.address.trim()
 
@@ -183,16 +182,16 @@ export default function OrcamentoPage() {
         setSubmitted(true)
     }
  
-    const inputClass = "border-b border-stone-400 bg-transparent px-0 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 outline-none transition-colors focus:border-golden w-full"
+    const inputClass = "border-b border-stone-400 bg-transparent px-0 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 outline-none transition-colors focus:border-dark-golden w-full"
     const labelClass = "text-[10px] font-bold uppercase tracking-[0.15em] text-zinc-400"
  
   return (
-    <div className="bg-stone-300 min-h-screen">
+    <div className="bg-stone-200 min-h-screen">
       <Navbar />
  
       {/* ── HERO ── */}
-      <section className="bg-zinc-900 relative overflow-hidden">
-        <div className="absolute inset-0 bg-linear-to-b from-zinc-900/80 to-zinc-900" />
+      <section className="bg-zinc-800 relative overflow-hidden">
+        <div className="absolute inset-0 bg-linear-to-b from-zinc-800/80 to-zinc-800" />
         <div className="relative container mx-auto px-6 py-24 pt-40 sm:pt-44">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <p className="text-dark-golden text-xs font-bold uppercase tracking-[0.3em] mb-3">
@@ -211,62 +210,26 @@ export default function OrcamentoPage() {
         </div>
       </section>
  
-      {/* ── TRUST STRIP ── */}
-      <div className="bg-stone-200 border-b border-stone-400">
-        <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-stone-300">
-            {trustItems.map((item, i) => (
-              <div key={i} className="flex items-start gap-4 py-6 px-4 first:pl-0 last:pr-0">
-                <div className="w-9 h-9 border border-stone-400 flex items-center justify-center shrink-0">
-                  {item.icon}
-                </div>
-                <div>
-                  <p className="text-sm font-bold text-zinc-900">
-                    {item.title}
-                  </p>
-
-                  <p className="text-xs text-zinc-400 mt-0.5 leading-relaxed">
-                    {item.desc}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
- 
       {/* ── FORM AREA ── */}
       <section className="container mx-auto px-6 py-20">
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-6xl mx-auto">
+          <div className="mb-12 max-w-2xl">
+            <p className="text-dark-golden text-xs font-bold uppercase tracking-[0.2em] mb-2">
+              Processo Simples
+            </p>
+            <h2 className="text-4xl font-black uppercase tracking-tight text-zinc-900">
+              Orçamento à sua medida
+            </h2>
+            <p className="mt-3 text-sm text-zinc-500 leading-relaxed">
+              Recolhemos apenas o essencial para lhe enviar uma proposta clara e ajustada ao seu projeto.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,780px)_320px] lg:justify-between gap-8 items-start">
+          <div className="w-full">
  
           {!submitted ? (
           <>
-          {/* Step indicator */}
-          <div className="flex items-center gap-0 mb-12">
-            {STEPS.map((label, i) => (
-              <div key={i} className="flex items-center flex-1 last:flex-none">
-                <div className="flex flex-col items-center gap-2">
-                  <div className={`w-8 h-8 flex items-center justify-center text-xs font-bold transition-all duration-300 border ${
-                    i < step
-                    ? 'bg-zinc-900 border-zinc-900 text-white'
-                    : i === step
-                    ? 'bg-stone-100 border-golden-amber text-golden-amber'
-                    : 'bg-stone-200 border-stone-400 text-zinc-400'
-                    }`}>
-                    {i < step ? '✓' : i + 1}
-                  </div>
-                  <span className={`text-[10px] font-bold uppercase tracking-widest whitespace-nowrap transition-colors duration-300 ${
-                    i === step ? 'text-zinc-900' : i < step ? 'text-zinc-500' : 'text-zinc-300'
-                    }`}>
-                    {label}
-                  </span>
-                </div>
-                {i < STEPS.length - 1 && (
-                  <div className={`flex-1 h-px mx-4 mb-5 transition-colors duration-500 ${i < step ? 'bg-zinc-900' : 'bg-stone-400'}`} />
-                )}
-              </div>
-            ))}
-          </div>
  
           {/* Form panel */}
           <div className="bg-stone-100 border border-stone-400 shadow-sm overflow-hidden">
@@ -278,7 +241,7 @@ export default function OrcamentoPage() {
                   variants={stepVariants}
                   initial="enter" animate="center" exit="exit"
                   transition={{ duration: 0.25 }}
-                  className="p-8 flex flex-col gap-7"
+                  className="p-6 md:p-7 flex flex-col gap-7"
                 >
                   <div>
                     <p className="text-dark-golden text-[10px] font-bold uppercase tracking-[0.2em] mb-1">
@@ -333,11 +296,11 @@ export default function OrcamentoPage() {
                       onClick={() => step2Valid && setStep(1)}
                       disabled={!step2Valid}
                       className={`group inline-flex items-center gap-3 text-xs font-bold uppercase tracking-widest transition-colors duration-300 ${
-                        step2Valid ? 'text-zinc-900 hover:text-golden-amber cursor-pointer' : 'text-zinc-300 cursor-not-allowed'
+                        step2Valid ? 'text-zinc-900 hover:text-dark-golden cursor-pointer' : 'text-zinc-300 cursor-not-allowed'
                       }`}
                     >
                       Seguinte
-                      <span className={`h-px transition-all duration-300 inline-block ${step2Valid ? 'w-8 bg-zinc-400 group-hover:w-14 group-hover:bg-golden-amber' : 'w-8 bg-stone-200'}`} />
+                      <span className={`h-px transition-all duration-300 inline-block ${step2Valid ? 'w-8 bg-zinc-300 group-hover:w-14 group-hover:bg-dark-golden' : 'w-8 bg-stone-100'}`} />
                     </button>
                   </div>
                 </motion.div>
@@ -350,7 +313,7 @@ export default function OrcamentoPage() {
                   variants={stepVariants}
                   initial="enter" animate="center" exit="exit"
                   transition={{ duration: 0.25 }}
-                  className="p-8 flex flex-col gap-7"
+                  className="p-6 md:p-7 flex flex-col gap-7"
                 >
                   <div>
                     <p className="text-dark-golden text-[10px] font-bold uppercase tracking-[0.2em] mb-1">
@@ -362,271 +325,36 @@ export default function OrcamentoPage() {
                     </h2>
 
                     <p className="text-zinc-400 text-xs mt-1">
-                      Selecione os serviços pretendidos e indique os detalhes de cada um.
+                      Descreva o projeto e, se tiver, anexe fotografias, plantas ou esboços.
                     </p>
 
                   </div>
 
-                  {/* Service multi-select */}
-                  <div>
-                    <label className={labelClass + " block mb-3"}>
-                      Tipo de serviço <span className="normal-case font-normal text-zinc-400/70">(pode selecionar mais do que um)</span>
-                    </label>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                      {servicos.map((s) => (
-                        <button
-                          key={s.value}
-                          type="button"
-                          onClick={() => toggleService(s.value)}
-                          className={`px-4 py-3 text-xs font-bold uppercase tracking-wider border transition-all duration-200 text-left ${
-                            form.services.includes(s.value)
-                            ? 'border-zinc-900 bg-zinc-900 text-white'
-                            : 'border-stone-200 text-zinc-500 hover:border-zinc-400 hover:text-zinc-900'
-                          }`}
-                        >
-                          {s.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Per-service detail panels */}
-                  {form.services.filter(v => v !== 'outro').length > 0 && (
-                    <div className="flex flex-col gap-4">
-                      {form.services.filter(v => v !== 'outro').map((value) => {
-                        const svc = servicos.find(s => s.value === value)
-                        const detail = form.serviceDetails[value] || { quantity: 1, items: [] }
-                        const isCollapsed = collapsedServices.has(value)
-
-                        if (isCollapsed) {
-                          const isServicePending = pendingDelete?.type === 'service' && pendingDelete.svcValue === value
-                          return (
-                            <div key={value} className="border border-stone-300 bg-stone-50 p-5 flex flex-col gap-3">
-                              {/* Group header */}
-                              <div className="flex items-center justify-between">
-                                <div>
-                                  <p className={labelClass}>{svc.label}</p>
-                                  <p className="text-sm font-semibold text-zinc-900 mt-0.5">
-                                    {detail.quantity} {detail.quantity === 1 ? 'Unidade' : 'Unidades'}
-                                  </p>
-                                </div>
-                                {isServicePending ? (
-                                  <div className="flex items-center gap-3">
-                                    <span className="text-[10px] text-zinc-500">Remover tudo?</span>
-                                    <button type="button" onClick={confirmDeleteAction} className="text-[10px] font-bold uppercase tracking-widest text-red-500 hover:text-red-700 cursor-pointer transition-colors duration-200">Sim</button>
-                                    <button type="button" onClick={cancelDelete} className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 hover:text-zinc-700 cursor-pointer transition-colors duration-200">Não</button>
-                                  </div>
-                                ) : (
-                                  <div className="flex items-center gap-4">
-                                    <button type="button" onClick={() => expandService(value)} className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 hover:text-zinc-900 transition-colors duration-200 cursor-pointer">
-                                      Editar tudo
-                                    </button>
-                                    <button type="button" onClick={() => requestDeleteService(value)} className="text-[10px] font-bold uppercase tracking-widest text-red-400 hover:text-red-600 transition-colors duration-200 cursor-pointer">
-                                      Remover
-                                    </button>
-                                  </div>
-                                )}
-                              </div>
-
-                              {/* Per-item rows */}
-                              {(detail.items || []).map((item, idx) => {
-                                const itemKey = `${value}-${idx}`
-                                const isItemExpanded = expandedItems.has(itemKey)
-                                const isItemPending = pendingDelete?.type === 'item' && pendingDelete.svcValue === value && pendingDelete.idx === idx
-                                const parts = [item.subType, item.width && `L: ${item.width} cm`, item.height && `A: ${item.height} cm`].filter(Boolean)
-
-                                return (
-                                  <div key={idx} className="border-t border-stone-200 pt-3 flex flex-col gap-3">
-                                    {isItemExpanded ? (
-                                      <div className="flex flex-col gap-4">
-                                        <div className="flex items-center justify-between">
-                                          <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">
-                                            {svc.label.replace(/s$/i, '')} {idx + 1}
-                                          </p>
-                                          <button type="button" onClick={() => toggleItemExpand(value, idx)} className="text-[10px] font-bold uppercase tracking-widest text-zinc-900 hover:text-golden-amber transition-colors duration-200 cursor-pointer">
-                                            Confirmar
-                                          </button>
-                                        </div>
-                                        {svc.subtypes.length > 0 && (
-                                          <div>
-                                            <label className={labelClass + " block mb-2"}>Tipo</label>
-                                            <div className="flex flex-wrap gap-2">
-                                              {svc.subtypes.map((sub) => (
-                                                <button key={sub} type="button" onClick={() => setItemDetail(value, idx, 'subType')(sub === item.subType ? '' : sub)}
-                                                  className={`px-3 py-2 text-xs font-bold uppercase tracking-wider border transition-all duration-200 ${item.subType === sub ? 'border-zinc-900 bg-zinc-900 text-white' : 'border-stone-300 text-zinc-500 hover:border-zinc-400 hover:text-zinc-900'}`}>
-                                                  {sub}
-                                                </button>
-                                              ))}
-                                            </div>
-                                          </div>
-                                        )}
-                                        <div className="flex gap-4">
-                                          <div className="flex-1 flex flex-col gap-1.5">
-                                            <label className={labelClass}>Largura (cm)</label>
-                                            <input type="number" min="0" value={item.width || ''} onChange={setItemDetail(value, idx, 'width')} placeholder="ex: 90" className={inputClass} />
-                                          </div>
-                                          <div className="flex-1 flex flex-col gap-1.5">
-                                            <label className={labelClass}>Altura (cm)</label>
-                                            <input type="number" min="0" value={item.height || ''} onChange={setItemDetail(value, idx, 'height')} placeholder="ex: 210" className={inputClass} />
-                                          </div>
-                                        </div>
-                                      </div>
-                                    ) : (
-                                      <div className="flex items-center justify-between gap-2">
-                                        <p className="text-xs text-zinc-600">
-                                          <span className="font-bold text-zinc-400 mr-1">{idx + 1}.</span>
-                                          {parts.length > 0 ? parts.join(' · ') : <span className="text-zinc-300 italic">Sem detalhes</span>}
-                                        </p>
-                                        {isItemPending ? (
-                                          <div className="flex items-center gap-2 shrink-0">
-                                            <span className="text-[10px] text-zinc-500">Remover?</span>
-                                            <button type="button" onClick={confirmDeleteAction} className="text-[10px] font-bold uppercase tracking-widest text-red-500 hover:text-red-700 cursor-pointer transition-colors duration-200">Sim</button>
-                                            <button type="button" onClick={cancelDelete} className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 hover:text-zinc-700 cursor-pointer transition-colors duration-200">Não</button>
-                                          </div>
-                                        ) : (
-                                          <div className="flex items-center gap-3 shrink-0">
-                                            <button type="button" onClick={() => toggleItemExpand(value, idx)} className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 hover:text-zinc-900 transition-colors duration-200 cursor-pointer">Editar</button>
-                                            {detail.items.length > 1 && (
-                                              <button type="button" onClick={() => requestDeleteItem(value, idx)} className="text-sm text-red-400 hover:text-red-600 transition-colors duration-200 cursor-pointer leading-none" aria-label="Remover">✕</button>
-                                            )}
-                                          </div>
-                                        )}
-                                      </div>
-                                    )}
-                                  </div>
-                                )
-                              })}
-                            </div>
-                          )
-                        }
-
-                        return (
-                          <div key={value} className="border border-stone-300 bg-stone-50 p-5 flex flex-col gap-5">
-                            <div className="flex items-center justify-between">
-                              <p className={labelClass}>{svc.label}</p>
-                              <div className="flex items-center gap-2">
-                                <label className={labelClass}>Quantidade</label>
-                                <input
-                                  type="number"
-                                  min="1"
-                                  value={detail.quantity}
-                                  onChange={setQuantity(value)}
-                                  onBlur={commitQuantity(value)}
-                                  className="w-16 border-b border-stone-400 bg-transparent px-0 py-1 text-sm text-zinc-900 text-center outline-none focus:border-golden"
-                                />
-                              </div>
-                            </div>
-
-                            {(detail.items || []).map((item, idx) => (
-                              <div key={idx} className="flex flex-col gap-4 pt-4 border-t border-stone-200">
-                                <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">
-                                  {svc.label.replace(/s$/i, '')} {idx + 1}
-                                </p>
-
-                                {svc.subtypes.length > 0 && (
-                                  <div>
-                                    <label className={labelClass + " block mb-2"}>
-                                      Tipo
-                                    </label>
-                                    <div className="flex flex-wrap gap-2">
-                                      {svc.subtypes.map((sub) => (
-                                        <button
-                                          key={sub}
-                                          type="button"
-                                          onClick={() => setItemDetail(value, idx, 'subType')(sub === item.subType ? '' : sub)}
-                                          className={`px-3 py-2 text-xs font-bold uppercase tracking-wider border transition-all duration-200 ${
-                                            item.subType === sub
-                                            ? 'border-zinc-900 bg-zinc-900 text-white'
-                                            : 'border-stone-300 text-zinc-500 hover:border-zinc-400 hover:text-zinc-900'
-                                          }`}
-                                        >
-                                          {sub}
-                                        </button>
-                                      ))}
-                                    </div>
-                                  </div>
-                                )}
-
-                                <div className="flex gap-4">
-                                  <div className="flex-1 flex flex-col gap-1.5">
-                                    <label className={labelClass}>
-                                      Largura (cm)
-                                    </label>
-                                    <input
-                                      type="number"
-                                      min="0"
-                                      value={item.width || ''}
-                                      onChange={setItemDetail(value, idx, 'width')}
-                                      placeholder="ex: 90"
-                                      className={inputClass}
-                                    />
-                                  </div>
-                                  <div className="flex-1 flex flex-col gap-1.5">
-                                    <label className={labelClass}>
-                                      Altura (cm)
-                                    </label>
-                                    <input
-                                      type="number"
-                                      min="0"
-                                      value={item.height || ''}
-                                      onChange={setItemDetail(value, idx, 'height')}
-                                      placeholder="ex: 210"
-                                      className={inputClass}
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                            ))}
-
-                            <div className="flex justify-end pt-2 border-t border-stone-200">
-                              <button
-                                type="button"
-                                onClick={() => collapseService(value)}
-                                className="text-[10px] font-bold uppercase tracking-widest text-zinc-900 hover:text-golden-amber transition-colors duration-200 cursor-pointer"
-                              >
-                                Confirmar
-                              </button>
-                            </div>
-                          </div>
-                        )
-                      })}
-                    </div>
-                  )}
-
                   {/* General info */}
                   <div className="flex flex-col gap-1.5">
                     <label htmlFor="description" className={labelClass}>
-                      {outroSelected
-                        ? <>Descrição do projeto <span className="normal-case font-normal text-red-400">*</span></>
-                        : <>Informação adicional <span className="normal-case font-normal text-zinc-400/70">(opcional)</span></>
-                      }
+                      Descrição do projeto <span className="normal-case font-normal text-red-400">*</span>
                     </label>
                     <textarea
                       id="description"
                       value={form.description}
                       onChange={set('description')}
                       rows={3}
-                      placeholder={outroSelected
-                        ? "Descreva aqui o seu projeto - tipo de trabalho, material, dimensões, localização..."
-                        : "Outros detalhes relevantes - material pretendido, cor, acabamento, quantidade..."
-                      }
+                      placeholder="Descreva o seu projeto: tipo de trabalho, medidas aproximadas."
                       className={inputClass + " resize-none"}
                     />
-                    {outroSelected && !form.description.trim() && (
-                      <p className="text-[10px] text-red-400 mt-0.5">Obrigatório quando "Outro" está selecionado.</p>
-                    )}
                   </div>
 
                   {/* File upload */}
                   <div className="flex flex-col gap-1.5">
                     <label className={labelClass}>
-                      Fotografias ou esboço <span className="normal-case font-normal text-zinc-400/70">(opcional)</span>
+                      Fotografias ou esboço <span className="normal-case font-normal text-zinc-400/70">(opcional, mas recomendado)</span>
                     </label>
 
                     {fileNames.length > 0 && (
                       <ul className="flex flex-col gap-1 mb-1">
                         {fileNames.map((name, i) => (
-                          <li key={i} className="flex items-center justify-between px-3 py-2 bg-stone-200 border border-stone-400">
+                          <li key={i} className="flex items-center justify-between px-3 py-2 bg-stone-100 border border-stone-400">
                             <span className="text-xs text-zinc-700 truncate max-w-[80%]">{name}</span>
                             <button
                               type="button"
@@ -670,11 +398,11 @@ export default function OrcamentoPage() {
                       onClick={() => step1Valid && setStep(2)}
                       disabled={!step1Valid}
                       className={`group inline-flex items-center gap-3 text-xs font-bold uppercase tracking-widest transition-colors duration-300 ${
-                        step1Valid ? 'text-zinc-900 hover:text-golden-amber cursor-pointer' : 'text-zinc-300 cursor-not-allowed'
+                        step1Valid ? 'text-zinc-900 hover:text-dark-golden cursor-pointer' : 'text-zinc-300 cursor-not-allowed'
                       }`}
                     >
                       Seguinte
-                      <span className={`h-px transition-all duration-300 inline-block ${step1Valid ? 'w-8 bg-zinc-400 group-hover:w-14 group-hover:bg-golden-amber' : 'w-8 bg-stone-200'}`} />
+                      <span className={`h-px transition-all duration-300 inline-block ${step1Valid ? 'w-8 bg-zinc-300 group-hover:w-14 group-hover:bg-dark-golden' : 'w-8 bg-stone-100'}`} />
                     </button>
                   </div>
                 </motion.div>
@@ -688,7 +416,7 @@ export default function OrcamentoPage() {
                   variants={stepVariants}
                   initial="enter" animate="center" exit="exit"
                   transition={{ duration: 0.25 }}
-                  className="p-8 flex flex-col gap-7"
+                  className="p-6 md:p-7 flex flex-col gap-7"
                 >
                   <div>
                     <p className="text-dark-golden text-[10px] font-bold uppercase tracking-[0.2em] mb-1">
@@ -749,43 +477,10 @@ export default function OrcamentoPage() {
                       </div>
 
                       <div className="flex flex-col gap-4">
-                        {form.services.map((value) => {
-                          const svc = servicos.find(s => s.value === value)
-                          const detail = form.serviceDetails[value] || {}
-                          if (value === 'outro') {
-                            return (
-                              <div key={value} className="flex flex-col gap-1.5">
-                                <p className="text-[10px] text-zinc-400 uppercase tracking-widest font-bold">
-                                  {svc.label}
-                                </p>
-                                <p className="text-xs text-zinc-400 italic">Ver informação adicional</p>
-                              </div>
-                            )
-                          }
-                          return (
-                            <div key={value} className="flex flex-col gap-1.5">
-                              <p className="text-[10px] text-zinc-400 uppercase tracking-widest font-bold">
-                                {svc.label} <span className="text-zinc-300">× {detail.quantity}</span>
-                              </p>
-                              {(detail.items || []).map((item, idx) => {
-                                const parts = [
-                                  item.subType,
-                                  item.width && `L: ${item.width} cm`,
-                                  item.height && `A: ${item.height} cm`,
-                                ].filter(Boolean)
-                                return parts.length > 0 ? (
-                                  <p key={idx} className="text-xs text-zinc-600">
-                                    <span className="text-zinc-400">{idx + 1}.</span> {parts.join(' · ')}
-                                  </p>
-                                ) : null
-                              })}
-                            </div>
-                          )
-                        })}
                         {form.description && (
                           <div>
                             <p className="text-[10px] text-zinc-400 uppercase tracking-widest font-bold">
-                              Informação adicional
+                              Descrição do projeto
                             </p>
 
                             <p className="text-sm text-zinc-700 mt-0.5 leading-relaxed">
@@ -824,10 +519,10 @@ export default function OrcamentoPage() {
                     </button>
                     <button
                       onClick={handleSubmit}
-                      className="group inline-flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-zinc-900 hover:text-golden-amber transition-colors duration-300 cursor-pointer"
+                      className="group inline-flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-zinc-900 hover:text-dark-golden transition-colors duration-300 cursor-pointer"
                     >
                       Enviar pedido
-                      <span className="w-8 h-px bg-zinc-400 group-hover:w-14 group-hover:bg-golden-amber transition-all duration-300 inline-block" />
+                      <span className="w-8 h-px bg-zinc-300 group-hover:w-14 group-hover:bg-dark-golden transition-all duration-300 inline-block" />
                     </button>
                   </div>
                 </motion.div>
@@ -842,7 +537,7 @@ export default function OrcamentoPage() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="bg-stone-100 border border-stone-400 shadow-sm p-12 flex flex-col items-center text-center gap-6"
+            className="bg-stone-100 border border-stone-400 shadow-sm p-8 md:p-10 flex flex-col items-center text-center gap-6"
           >
             <GoShieldCheck className="w-7 h-7 text-dark-golden" />
             
@@ -856,7 +551,7 @@ export default function OrcamentoPage() {
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 mt-2">
-              <Link to="/" className="inline-flex items-center justify-center px-6 py-3 bg-zinc-900 text-white text-xs font-bold uppercase tracking-wider hover:bg-zinc-700 transition-colors duration-200">
+              <Link to="/" className="inline-flex items-center justify-center px-6 py-3 bg-zinc-800 text-white text-xs font-bold uppercase tracking-wider hover:bg-zinc-600 transition-colors duration-200">
                 Voltar ao início
               </Link>
               <Link to="/galeria" className="inline-flex items-center justify-center px-6 py-3 border border-stone-200 text-zinc-500 text-xs font-bold uppercase tracking-wider hover:border-zinc-400 hover:text-zinc-900 transition-colors duration-200">
@@ -865,6 +560,46 @@ export default function OrcamentoPage() {
             </div>
           </motion.div>
         )}
+
+        </div>
+
+        <aside className="flex flex-col gap-4 w-full lg:sticky lg:top-32">
+          <div className="bg-stone-100 border border-stone-300 p-6">
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-dark-golden mb-4">
+              Como Funciona
+            </p>
+            <ul className="flex flex-col gap-3">
+              {STEPS.map((label, i) => (
+                <li key={label} className="flex items-center gap-3">
+                  <span className={`w-6 h-6 border text-[10px] font-bold flex items-center justify-center ${step >= i ? 'border-zinc-800 bg-zinc-800 text-white' : 'border-stone-400 text-zinc-400'}`}>
+                    {i + 1}
+                  </span>
+                  <span className={`text-xs font-bold uppercase tracking-wider ${step >= i ? 'text-zinc-900' : 'text-zinc-500'}`}>
+                    {label}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="bg-zinc-800 border border-zinc-700 p-6">
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-dark-golden mb-4">
+              Garantias Syslobo
+            </p>
+            <div className="flex flex-col gap-4">
+              {trustItems.map((item, i) => (
+                <div key={i} className="flex items-start gap-3">
+                  <div className="mt-0.5 text-dark-golden">{item.icon}</div>
+                  <div>
+                    <p className="text-xs font-bold text-white uppercase tracking-wide">{item.title}</p>
+                    <p className="text-xs text-zinc-300 mt-1 leading-relaxed">{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </aside>
+        </div>
 
         </div>
       </section>

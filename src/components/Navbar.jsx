@@ -59,7 +59,7 @@ export default function Navbar () {
     <div>
       {/* NAVBAR */}
       <header
-        className={`fixed top-0 left-0 w-full z-50 bg-stone-200 drop-shadow-md transition-transform duration-300 ${
+        className={`fixed top-0 left-0 w-full z-50 bg-stone-100 drop-shadow-md transition-transform duration-300 ${
           show ? "translate-y-0" : "-translate-y-full"
         }`}
       >
@@ -114,8 +114,8 @@ export default function Navbar () {
           {/* RIGHT — Contact Button */}
           <div className="hidden mx-auto col-span-1 lg:flex items-center gap-3">
             <Link to="/orcamento">
-            <Button className="btn h-10 relative inline-flex items-center justify-start overflow-hidden font-medium transition-all bg-stone-900 rounded group py-1.5 px-2.5 cursor-pointer">
-              <span className="absolute inset-0 rounded bg-stone-700 origin-center scale-x-0 transition-transform duration-800 ease-in-out group-hover:scale-x-100"></span>
+            <Button className="btn h-10 relative inline-flex items-center justify-start overflow-hidden font-medium transition-all bg-stone-800 rounded group py-1.5 px-2.5 cursor-pointer">
+              <span className="absolute inset-0 rounded bg-stone-600 origin-center scale-x-0 transition-transform duration-800 ease-in-out group-hover:scale-x-100"></span>
               <span className="relative w-full text-left text-white transition-colors duration-300 ease-in-out group-hover:text-white">
                 Pedir Orçamento
               </span>
@@ -147,7 +147,7 @@ export default function Navbar () {
         {/* Drawer Panel */}
         <aside
           ref={drawerRef}
-          className={`absolute left-0 top-0 h-full w-[80%] max-w-xs sm:max-w-sm bg-stone-200 shadow-2xl transform transition-transform duration-300 ease-in-out flex flex-col
+          className={`absolute left-0 top-0 h-full w-[80%] max-w-xs sm:max-w-sm bg-stone-100 shadow-2xl transform transition-transform duration-300 ease-in-out flex flex-col
             ${open ? "translate-x-0 open" : "-translate-x-full"}
             group`}
         >
@@ -197,7 +197,7 @@ export default function Navbar () {
               <Link
                 to="/orcamento"
                 onClick={() => setOpen(false)}
-                className="flex items-center justify-center w-full py-3 bg-stone-900 text-white text-sm sm:text-base font-semibold uppercase tracking-widest hover:bg-golden hover:text-stone-900 transition-colors duration-300"
+                className="flex items-center justify-center w-full py-3 bg-stone-800 text-white text-sm sm:text-base font-semibold uppercase tracking-widest hover:bg-golden hover:text-stone-900 transition-colors duration-300"
               >
                 Pedir Orçamento
               </Link>

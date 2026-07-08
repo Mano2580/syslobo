@@ -164,16 +164,16 @@ export default function Servicos() {
   return (
     <div>
       <Navbar />
-       <div className="bg-stone-300 min-h-screen">
+       <div className="bg-stone-200 min-h-screen">
  
             {/* ── HERO ── */}
-            <section className="relative bg-zinc-900 overflow-hidden">
+            <section className="relative bg-zinc-800 overflow-hidden">
                 <img
                     src={ex3}
                     alt="Serviços"
                     className="absolute inset-0 w-full h-full object-cover opacity-20 grayscale"
                 />
-                <div className="absolute inset-0 bg-linear-to-b from-zinc-900/60 to-zinc-900" />
+                <div className="absolute inset-0 bg-linear-to-b from-zinc-800/60 to-zinc-800" />
                 <div className="relative container mx-auto px-6 py-28 pt-40 sm:pt-44 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -216,7 +216,7 @@ export default function Servicos() {
                             onClick={() => scrollTo(s.id)}
                             className={`shrink-0 px-4 py-1.5 text-[11px] font-bold uppercase tracking-widest border transition-colors duration-200 ${
                                 activeSection === s.id
-                                    ? "bg-zinc-900 text-white border-zinc-900"
+                                    ? "bg-zinc-800 text-white border-zinc-900"
                                     : "bg-white text-zinc-400 border-stone-200 hover:border-zinc-400 hover:text-zinc-700"
                             }`}
                         >
@@ -355,7 +355,7 @@ export default function Servicos() {
             </div>
  
             {/* ── SUPPLIERS ── */}
-            <section className="bg-stone-500/80 py-20">
+            <section className="bg-stone-400/80 py-20">
                 <div className="container mx-auto px-6">
                     <div className="text-center mb-12">
                         <p className="text-golden text-xs font-bold uppercase tracking-[0.2em] mb-2">
@@ -376,9 +376,9 @@ export default function Servicos() {
                                 whileInView={{ opacity: 1 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.5 }}
-                                className="group flex flex-col items-center justify-center gap-3 py-12 px-8 hover:bg-stone-400 transition-colors duration-200 cursor-pointer"
+                                className="group flex flex-col items-center justify-center gap-3 py-12 px-8 hover:bg-stone-300 transition-colors duration-200 cursor-pointer"
                             >
-                                <div className="w-28 h-10 bg-stone-600 group-hover:bg-stone-500 transition-colors duration-200 flex items-center justify-center">
+                                <div className="w-28 h-10 bg-stone-500 group-hover:bg-stone-400 transition-colors duration-200 flex items-center justify-center">
                                     <span className="text-xs font-bold uppercase tracking-widest text-stone-200 group-hover:text-white transition-colors duration-200">
                                         {f.name}
                                     </span>
@@ -393,7 +393,7 @@ export default function Servicos() {
             </section>
  
             {/* ── CLOSING CTA ── */}
-            <section className="bg-stone-700 py-20">
+            <section className="bg-stone-600 py-20">
                 <div className="container mx-auto px-6">
                     <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
                         <div>

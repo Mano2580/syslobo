@@ -46,16 +46,16 @@ export default function SobreNos() {
         <div>
             <Navbar />
 
-            <div className="bg-stone-300 min-h-screen">
+            <div className="bg-stone-200 min-h-screen">
 
                 {/* ── HERO ── */}
-                <section className="relative bg-zinc-900 overflow-hidden">
+                <section className="relative bg-zinc-800 overflow-hidden">
                     <img
                         src={oficina}
                         alt="Oficina Syslobo"
                         className="absolute inset-0 w-full h-full object-cover opacity-20 grayscale"
                     />
-                    <div className="absolute inset-0 bg-linear-to-b from-zinc-900/60 to-zinc-900" />
+                    <div className="absolute inset-0 bg-linear-to-b from-zinc-800/60 to-zinc-800" />
                     <div className="relative container mx-auto px-6 py-28 pt-40 sm:pt-44">
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
@@ -76,7 +76,7 @@ export default function SobreNos() {
                 </section>
 
                 {/* ── HISTÓRIA ── */}
-                <section className="bg-stone-200 py-20">
+                <section className="bg-stone-100 py-20">
                     <div className="container mx-auto px-6">
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
@@ -144,14 +144,14 @@ export default function SobreNos() {
                 </section>
 
                 {/* ── MISSÃO ── */}
-                <section className="relative bg-stone-800 py-20 overflow-hidden">
+                <section className="relative bg-stone-700 py-20 overflow-hidden">
                     <div className="absolute inset-0">
                         <img
                             src={ex2}
                             alt=""
                             className="w-full h-full object-cover opacity-10 grayscale"
                         />
-                        <div className="absolute inset-0 bg-stone-800/80" />
+                        <div className="absolute inset-0 bg-stone-700/80" />
                     </div>
                     <div className="relative container mx-auto px-6 text-center max-w-3xl">
                         <motion.div
@@ -177,7 +177,7 @@ export default function SobreNos() {
 
 
                 {/* ── PERCURSO (TIMELINE) ── */}
-                <section className="bg-stone-200 py-20 cursor-default">
+                <section className="bg-stone-100 py-20 cursor-default">
                     <div className="container mx-auto px-6">
                         <div className="mb-12">
                             <p className="text-golden text-xs font-bold uppercase tracking-[0.2em] mb-2">
@@ -187,7 +187,7 @@ export default function SobreNos() {
                                 Marcos Importantes
                             </h2>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-stone-300">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-stone-200">
                             {marcos.map((m, i) => (
                                 <motion.div
                                     key={i}
@@ -195,7 +195,7 @@ export default function SobreNos() {
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true }}
                                     transition={{ duration: 0.6, delay: i * 0.12 }}
-                                    className="bg-stone-200 p-8 group"
+                                    className="bg-stone-100 p-8 group"
                                 >
                                     <div className="text-5xl font-black tracking-tighter text-dark-golden">
                                         {m.year}
@@ -213,7 +213,7 @@ export default function SobreNos() {
                 </section>
 
                 {/* ── VALORES ── */}
-                <section className="bg-stone-300 py-20">
+                <section className="bg-stone-200 py-20">
                     <div className="container mx-auto px-6">
                         <div className="mb-12">
                             <p className="text-golden text-xs font-bold uppercase tracking-[0.2em] mb-2">
@@ -231,7 +231,7 @@ export default function SobreNos() {
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true }}
                                     transition={{ duration: 0.5, delay: i * 0.1 }}
-                                    className="p-8 flex flex-col gap-4 group hover:bg-stone-300 transition-colors duration-300"
+                                    className="p-8 flex flex-col gap-4 group hover:bg-stone-200 transition-colors duration-300"
                                 >
                                     <div className="w-12 h-12 border border-stone-300 group-hover:border-golden/50 flex items-center justify-center transition-colors duration-300">
                                         {v.icon}
@@ -251,7 +251,7 @@ export default function SobreNos() {
                 </section>
                 
                 {/* ── CTA ── */}
-                <section className="bg-stone-900 py-20">
+                <section className="bg-stone-800 py-20">
                     <div className="container mx-auto px-6 text-center">
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
