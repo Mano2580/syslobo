@@ -28,7 +28,7 @@ const contactDetails = [
   {
     icon: <MdOutlineEmail className="w-5 h-5 text-golden" />,
     label: "Email",
-    value: "geral@syslobo.pt",
+    value: "serralharialobo@syslobo.pt",
   },
   {
     icon: <SlLocationPin className="w-5 h-5 text-golden" />,

@@ -97,8 +97,8 @@ export default function Footer() {
                                 <span className="block text-slate-400 text-xs uppercase tracking-wide">
                                     Email
                                 </span>
-                                <a href="mailto:geral@syslobo.pt" className="hover:text-golden transition-colors">
-                                    geral@syslobo.pt
+                                <a href="mailto:serralharialobo@syslobo.pt" className="hover:text-golden transition-colors">
+                                    serralharialobo@syslobo.pt
                                 </a>
                             </li>
                             <li>

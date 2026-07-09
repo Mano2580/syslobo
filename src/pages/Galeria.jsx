@@ -34,18 +34,35 @@ const COPIES = 51;
 
 function ProjectModal({ projeto, onClose, onPrev, onNext }) {
     const [activeImg, setActiveImg] = useState(0);
+    const [fullscreenImg, setFullscreenImg] = useState(null);
     const scrollRef = useRef(null);
 
     useEffect(() => {
         const handleKey = (e) => {
-            if (e.key === "Escape") onClose();
-            if (e.key === "ArrowLeft") onPrev();
-            if (e.key === "ArrowRight") onNext();
+            if (e.key === "Escape") {
+                if (fullscreenImg !== null) {
+                    setFullscreenImg(null);
+                    return;
+                }
+                onClose();
+            }
+            if (e.key === "ArrowLeft") {
+                if (fullscreenImg !== null) {
+                    return;
+                }
+                onPrev();
+            }
+            if (e.key === "ArrowRight") {
+                if (fullscreenImg !== null) {
+                    return;
+                }
+                onNext();
+            }
         };
         window.addEventListener("keydown", handleKey);
         document.body.style.overflow = "hidden";
         return () => { window.removeEventListener("keydown", handleKey); document.body.style.overflow = ""; };
-    }, [onClose, onPrev, onNext]);
+    }, [fullscreenImg, onClose, onPrev, onNext, projeto.images.length]);
 
     // Center first image on open
     useEffect(() => {
@@ -86,7 +103,8 @@ function ProjectModal({ projeto, onClose, onPrev, onNext }) {
     }, [projeto.images.length]);
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4 lg:p-12" onClick={onClose}>
+        <>
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4 lg:p-12" onClick={onClose}>
 
             <div className="flex flex-col lg:flex-row w-full max-w-7xl h-full max-h-[85vh] bg-stone-900 border border-zinc-800 shadow-2xl" onClick={(e) => e.stopPropagation()}>
                 {/* Ferris Wheel Infinite Scroll */}
@@ -100,13 +118,17 @@ function ProjectModal({ projeto, onClose, onPrev, onNext }) {
                         <div
                             key={i}
                             style={{ flexShrink: 0, padding: '8px 20px' }}
-                            className="flex items-center justify-center"
+                            className="group relative flex items-center justify-center"
                         >
                             <img
                                 src={img}
                                 alt={`${projeto.title} ${(i % projeto.images.length) + 1}`}
-                                className="w-full object-cover aspect-video"
+                                onClick={() => setFullscreenImg(i % projeto.images.length)}
+                                className="w-full object-cover aspect-video cursor-pointer"
                             />
+                            <span className="pointer-events-none absolute bottom-4 right-8 bg-black/70 text-white text-[10px] font-bold uppercase tracking-[0.12em] px-3 py-1 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                                Clique para ampliar
+                            </span>
                         </div>
                     ))}
                 </div>
@@ -139,7 +161,28 @@ function ProjectModal({ projeto, onClose, onPrev, onNext }) {
                     </div>
                 </div>
             </div>
-        </div>
+            </div>
+
+            <AnimatePresence>
+            {fullscreenImg !== null && (
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="fixed inset-0 z-60 bg-black/95 p-4 lg:p-10 flex items-center justify-center"
+                    onClick={() => setFullscreenImg(null)}
+                >
+                    <img
+                        src={projeto.images[fullscreenImg]}
+                        alt={`${projeto.title} ${fullscreenImg + 1}`}
+                        onClick={(e) => e.stopPropagation()}
+                        className="max-w-full max-h-full object-contain"
+                    />
+                </motion.div>
+            )}
+            </AnimatePresence>
+        </>
     );
 }
  

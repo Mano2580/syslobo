@@ -190,7 +190,7 @@ const contactDetails = [
     {
         icon: <MdOutlineEmail className="w-5 h-5 text-golden" />,
         label: "Email",
-        value: "geral@syslobo.pt",
+        value: "serralharialobo@syslobo.pt",
     },
     {
         icon: <SlLocationPin className="w-5 h-5 text-golden" />,
@@ -218,7 +218,7 @@ function ProjectTile({ projeto, onClick, className = "", index = 0 }) {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
             onClick={onClick}
-            className={`group relative overflow-hidden cursor-pointer bg-stone-900 border border-zinc-800 hover:border-zinc-400 transition-all duration-500 ${className}`}
+            className={`group relative overflow-hidden cursor-pointer bg-stone-950 border border-zinc-800 hover:border-zinc-400 transition-all duration-500 ${className}`}
         >
             {/* Photo — Grayscale at rest, full color on hover */}
             <img
@@ -228,7 +228,7 @@ function ProjectTile({ projeto, onClick, className = "", index = 0 }) {
             />
 
             {/* Heavy gradient at the bottom to ensure text readability */}
-            <div className="absolute inset-0 bg-~linear-to-t from-stone-900 via-stone-900/40 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-90" />
+            <div className="absolute inset-0 bg-~linear-to-t from-stone-950 via-stone-950/40 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-90" />
 
             {/* Category pill — Sharp, blueprint style */}
             <div className="absolute top-4 left-4">
@@ -358,7 +358,7 @@ export default function Body() {
         <>
         
         {/* SERVIÇOS */}
-         <section id="servicos" className="bg-stone-100 py-20">
+         <section id="servicos" className="bg-stone-200 py-20">
             <div className="container mx-auto px-6">
  
                 {/* Header */}
@@ -376,7 +376,7 @@ export default function Body() {
                         className="group inline-flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-zinc-500 hover:text-zinc-900 transition-colors duration-300"
                     >
                         Ver Todos os Serviços
-                        <span className="w-8 h-px bg-zinc-300 group-hover:w-14 group-hover:bg-golden transition-all duration-300 inline-block"></span>
+                        <span className="w-8 h-px bg-zinc-400 group-hover:w-14 group-hover:bg-golden transition-all duration-300 inline-block"></span>
                     </Link>
                 </div>
  
@@ -420,7 +420,7 @@ export default function Body() {
         </section>
 
         {/* SOBRE NÓS */}
-      <section className="relative w-full min-h-200 flex items-center justify-center py-20 bg-stone-700">
+      <section className="relative w-full min-h-200 flex items-center justify-center py-20 bg-stone-800">
       {/* Background with simple darkened image */}
       <div className="absolute inset-0 z-0">
         <img 
@@ -428,7 +428,7 @@ export default function Body() {
           alt="Workshop" 
           className="w-full h-full object-cover opacity-20 grayscale"
         />
-        <div className="absolute inset-0 bg-stone-700/70"></div>
+        <div className="absolute inset-0 bg-stone-800/70"></div>
       </div>
 
       <div className="relative z-10 container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
@@ -471,11 +471,11 @@ export default function Body() {
 
         {/* Right Side: The Main Plaque */}
         <div className="w-full flex justify-center lg:justify-end">
-          <div className="relative w-full max-w-md bg-stone-600 border-2 border-stone-700 p-6 sm:p-10 md:p-12 shadow-[20px_20px_0px_0px_rgba(0,0,0,0.2)] overflow-visible">
+          <div className="relative w-full max-w-md bg-stone-700 border-2 border-stone-700 p-6 sm:p-10 md:p-12 shadow-[20px_20px_0px_0px_rgba(0,0,0,0.2)] overflow-visible">
             
             {/* Structural Detail: Corner Bolts */}
             {['top-4 left-4', 'top-4 right-4', 'bottom-4 left-4', 'bottom-4 right-4'].map((s) => (
-              <div key={s} className={`absolute ${s} w-4 h-4 rounded-full bg-stone-600 shadow-inner border border-stone-600`}></div>
+              <div key={s} className={`absolute ${s} w-4 h-4 rounded-full bg-stone-700 shadow-inner border border-stone-600`}></div>
             ))}
 
             <div className="flex flex-col items-center overflow-visible">
@@ -512,7 +512,7 @@ export default function Body() {
       </div>
     </section>  
         {/* Stats, Quote & Reasons */}
-        <section className="bg-stone-200 py-15">
+        <section className="bg-stone-300 py-15">
             <div className="container mx-auto px-6">
  
                 {/* Stats bar */}
@@ -585,7 +585,7 @@ export default function Body() {
                                 className={`transition-all duration-300 rounded-none ${
                                     i === activeQuote
                                         ? 'w-6 h-1.5 bg-golden'
-                                        : 'w-1.5 h-1.5 bg-zinc-300 hover:bg-zinc-500'
+                                        : 'w-1.5 h-1.5 bg-zinc-400 hover:bg-zinc-600'
                                 }`}
                                 aria-label={`Testemunho ${i + 1}`}
                             />
@@ -602,7 +602,7 @@ export default function Body() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: i * 0.1 }}
-                            className="p-8 flex flex-col items-center text-center gap-4 group hover:bg-stone-200 transition-colors duration-300"
+                            className="p-8 flex flex-col items-center text-center gap-4 group hover:bg-stone-300 transition-colors duration-300"
                         >
                             <div className="w-12 h-12 border border-stone-300 group-hover:border-golden/50 flex items-center justify-center transition-colors duration-300">
                                 {r.icon}
@@ -623,7 +623,7 @@ export default function Body() {
         </section>
 
         {/* GALERIA */}
-        <section id="galeria" className="bg-stone-100 py-24">
+        <section id="galeria" className="bg-stone-200 py-24">
             <div className="container mx-auto px-6">
 
                 {/* Header */}
@@ -641,7 +641,7 @@ export default function Body() {
                         className="group inline-flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-zinc-500 hover:text-zinc-900 transition-colors duration-300"
                     >
                         Ver Portfólio Completo
-                        <span className="w-8 h-px bg-zinc-300 group-hover:w-14 group-hover:bg-golden transition-all duration-300 inline-block"></span>
+                        <span className="w-8 h-px bg-zinc-400 group-hover:w-14 group-hover:bg-golden transition-all duration-300 inline-block"></span>
                     </Link>
                 </div>
 
@@ -658,7 +658,7 @@ export default function Body() {
                             onClick={() => openProject(p.id)}
                         >
                             {/* Image Container */}
-                            <div className="relative overflow-hidden bg-zinc-100 shadow-sm">
+                            <div className="relative overflow-hidden bg-zinc-200 shadow-sm">
                                 <img
                                     src={p.images[0]}
                                     alt={p.title}
@@ -705,13 +705,13 @@ export default function Body() {
                     onClick={close}
                 >
                     <div
-                        className="flex flex-col lg:flex-row w-full max-w-7xl h-full max-h-[85vh] bg-stone-900 border border-zinc-800 shadow-2xl"
+                        className="flex flex-col lg:flex-row w-full max-w-7xl h-full max-h-[85vh] bg-stone-950 border border-zinc-800 shadow-2xl"
                         onClick={(e) => e.stopPropagation()}
                     >
                         {/* Ferris Wheel Infinite Scroll */}
                         <div
                             ref={scrollRef}
-                            className="flex-1 overflow-y-scroll bg-stone-900"
+                            className="flex-1 overflow-y-scroll bg-stone-950"
                             style={{ scrollbarWidth: 'none' }}
                             onScroll={handleScroll}
                         >
@@ -731,9 +731,9 @@ export default function Body() {
                         </div>
 
                         {/* Dark Sidebar */}
-                        <div className="w-full lg:w-80 flex flex-col border-t lg:border-t-0 lg:border-l border-zinc-800 shrink-0 bg-stone-900">
+                        <div className="w-full lg:w-80 flex flex-col border-t lg:border-t-0 lg:border-l border-zinc-800 shrink-0 bg-stone-950">
                             <div className="p-8 border-b border-zinc-800">
-                                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white bg-zinc-700 px-3 py-1">
+                                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white bg-zinc-800 px-3 py-1">
                                     {projeto.category}
                                 </span>
                                 <h3 className="text-white font-black text-xl mt-6 leading-tight uppercase tracking-tight">
@@ -764,7 +764,7 @@ export default function Body() {
         </section>
 
         {/* CONTACTO */}
-        <section id="contacto" className="bg-stone-300/50 py-24">
+        <section id="contacto" className="bg-stone-400/50 py-24">
             <div className="container mx-auto px-6">
 
                 {/* Header */}
@@ -825,7 +825,7 @@ export default function Body() {
                         transition={{ duration: 0.5 }}
                         className="lg:pl-16 pt-0"
                     >
-                        <div className="relative bg-stone-200 border border-stone-300 p-8 md:p-10 shadow-lg overflow-hidden">
+                        <div className="relative bg-stone-300 border border-stone-300 p-8 md:p-10 shadow-lg overflow-hidden">
 
 
                             {/* Watermark logo (kept but cleaner) */}
@@ -856,7 +856,7 @@ export default function Body() {
                                 {/* Strong CTA button */}
                                 <a
                                     href="/orcamento"
-                                    className="group inline-flex items-center justify-center gap-2 bg-zinc-800 hover:bg-golden px-4 py-3 sm:px-6 sm:py-4 font-bold text-xs sm:text-sm uppercase tracking-widest text-white hover:text-zinc-900 transition-all duration-300 shadow-md self-start"
+                                    className="group inline-flex items-center justify-center gap-2 bg-zinc-900 hover:bg-golden px-4 py-3 sm:px-6 sm:py-4 font-bold text-xs sm:text-sm uppercase tracking-widest text-white hover:text-zinc-900 transition-all duration-300 shadow-md self-start"
                                 >
                                     Pedir Orçamento
                                     <HiArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
