@@ -15,7 +15,16 @@ import SysloboLogo from "@/assets/SysloboLogo.png";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from 'framer-motion';
 import PortaBody from "@/assets/Home/PortaBody.JPEG";
-import { TestTubeDiagonalIcon } from "lucide-react";
+import {
+    Phone,
+    Mail,
+    MapPin,
+    Clock,
+    ArrowRight,
+    Facebook,
+    Instagram,
+    Linkedin,
+} from "lucide-react";
 
 
 
@@ -100,36 +109,35 @@ const servicos = [
     },
 ];
 
-// Per-card corner accent line configs
-// eslint-disable-next-line no-unused-vars
+// Per-card accent line configs for each service tile hover.
 const accentConfigs = [
     // Portas — top-left corner, expand right + down
     [
-        "absolute top-0 left-0 h-0.5 bg-dark-golden transition-all duration-500 w-0 group-hover:w-full",
-        "absolute top-0 left-0 w-0.5 bg-dark-golden transition-all duration-500 h-0 group-hover:h-full",
+        "absolute top-0 left-0 h-0.5 bg-golden transition-all duration-500 w-0 group-hover:w-full",
+        "absolute top-0 left-0 w-0.5 bg-golden transition-all duration-500 h-0 group-hover:h-full",
     ],
     // Janelas — top-center, expand both sides
     [
-        "absolute top-0 inset-x-0 h-0.5 bg-dark-golden transition-all duration-500 scale-x-0 group-hover:scale-x-100 origin-center",
+        "absolute top-0 inset-x-0 h-0.5 bg-golden transition-all duration-500 scale-x-0 group-hover:scale-x-100 origin-center",
     ],
     // Portões — top-right corner, expand left + down
     [
-        "absolute top-0 right-0 h-0.5 bg-dark-golden transition-all duration-500 w-0 group-hover:w-full",
-        "absolute top-0 right-0 w-0.5 bg-dark-golden transition-all duration-500 h-0 group-hover:h-full",
+        "absolute top-0 right-0 h-0.5 bg-golden transition-all duration-500 w-0 group-hover:w-full",
+        "absolute top-0 right-0 w-0.5 bg-golden transition-all duration-500 h-0 group-hover:h-full",
     ],
     // Fachadas — bottom-left corner, expand right + up
     [
-        "absolute bottom-0 left-0 h-0.5 bg-dark-golden transition-all duration-500 w-0 group-hover:w-full",
-        "absolute bottom-0 left-0 w-0.5 bg-dark-golden transition-all duration-500 h-0 group-hover:h-full",
+        "absolute bottom-0 left-0 h-0.5 bg-golden transition-all duration-500 w-0 group-hover:w-full",
+        "absolute bottom-0 left-0 w-0.5 bg-golden transition-all duration-500 h-0 group-hover:h-full",
     ],
     // Grades — bottom-center, expand both sides
     [
-        "absolute bottom-0 inset-x-0 h-0.5 bg-dark-golden transition-all duration-500 scale-x-0 group-hover:scale-x-100 origin-center",
+        "absolute bottom-0 inset-x-0 h-0.5 bg-golden transition-all duration-500 scale-x-0 group-hover:scale-x-100 origin-center",
     ],
     // Coberturas — bottom-right corner, expand left + up
     [
-        "absolute bottom-0 right-0 h-0.5 bg-dark-golden transition-all duration-500 w-0 group-hover:w-full",
-        "absolute bottom-0 right-0 w-0.5 bg-dark-golden transition-all duration-500 h-0 group-hover:h-full",
+        "absolute bottom-0 right-0 h-0.5 bg-golden transition-all duration-500 w-0 group-hover:w-full",
+        "absolute bottom-0 right-0 w-0.5 bg-golden transition-all duration-500 h-0 group-hover:h-full",
     ],
 ];
 
@@ -181,33 +189,46 @@ const testimonials = [
     },
 ];
 
-const contactDetails = [
+const contacts = [
     {
-        icon: <BsTelephone className="w-5 h-5 text-golden" />,
-        label: "Telefone",
-        value: <span>+351 253 881 617<br />+351 962 996 237<br /><span className="text-xs text-zinc-400">(Chamada para a rede fixa/móvel nacional)</span></span>,
+        icon: Phone,
+        title: "Telefone",
+        content: (
+            <>
+                <p>+351 253 881 617</p>
+                <p>+351 962 996 237</p>
+                <span className="text-sm text-zinc-500">
+                    Chamada para a rede fixa/movel nacional
+                </span>
+            </>
+        ),
     },
     {
-        icon: <MdOutlineEmail className="w-5 h-5 text-golden" />,
-        label: "Email",
-        value: "serralharialobo@syslobo.pt",
+        icon: Mail,
+        title: "Email",
+        content: <p>serralharialobo@syslobo.pt</p>,
     },
     {
-        icon: <SlLocationPin className="w-5 h-5 text-golden" />,
-        label: "Morada",
-        value: <span>Rua Padre Olavo Teixeira Martins, 161<br />4750-392, Carapeços, Portugal</span>,
+        icon: MapPin,
+        title: "Morada",
+        content: (
+            <>
+                <p>Rua Padre Olavo Teixeira Martins, 161</p>
+                <p>4750-392 Carapecos, Portugal</p>
+            </>
+        ),
     },
     {
-        icon: <GoClock className="w-5 h-5 text-golden" />,
-        label: "Horário",
-        value: "Seg - Sex: 09:00 - 18:00",
+        icon: Clock,
+        title: "Horario",
+        content: <p>Seg - Sex | 09:00 - 18:00</p>,
     },
 ];
 
 const socialLinks = [
-    { icon: FaLinkedin, href: "https://www.linkedin.com/syslobo", label: "LinkedIn" },
-    { icon: FaFacebook, href: "https://www.facebook.com/syslobo", label: "Facebook" },
-    { icon: FaInstagram, href: "https://www.instagram.com/syslobo", label: "Instagram" },
+    { icon: Linkedin, href: "https://www.linkedin.com/syslobo", label: "LinkedIn" },
+    { icon: Facebook, href: "https://www.facebook.com/syslobo", label: "Facebook" },
+    { icon: Instagram, href: "https://www.instagram.com/syslobo", label: "Instagram" },
 ];
 
 function ProjectTile({ projeto, onClick, className = "", index = 0 }) {
@@ -382,7 +403,7 @@ export default function Body() {
  
                 {/* Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[#c5c2bc]">
-                    {servicos.map((servico) => (
+                    {servicos.map((servico, index) => (
                         <Link
                             key={servico.id}
                             to="/servicos"
@@ -410,8 +431,10 @@ export default function Body() {
                                 </span>
                             </div>
  
-                            {/* Amber top-left corner accent on hover */}
-                            <div className="absolute top-0 left-0 w-0 h-0.5 bg-golden transition-all duration-300 group-hover:w-full" />
+                            {/* Position-based hover accent */}
+                            {accentConfigs[index % accentConfigs.length].map((accentClass, accentIndex) => (
+                                <div key={accentIndex} className={`${accentClass} pointer-events-none`} />
+                            ))}
                         </Link>
                     ))}
                 </div>
@@ -486,13 +509,13 @@ export default function Body() {
                 transition={{ duration: 1.2, ease: "easeOut", delay: 0.3 }}
               >
                 <span 
-                  className="text-[10rem] leading-none text-transparent bg-clip-text font-normal italic px-6"
+                  className="text-[10rem] leading-none text-transparent bg-clip-text font-normal px-6"
                   style={{ 
                     fontFamily: "'Great Vibes', cursive",
                     backgroundImage: 'linear-gradient(180deg, #e4e4e7 0%, #a1a1aa 40%, #71717a 100%)',
                   }}
                 >
-                  50+
+                  45+
                 </span>
               </motion.div>
 
@@ -545,7 +568,7 @@ export default function Body() {
 
                         {/* Quote mark */}
                         <div className="text-center mb-4">
-                            <span className="text-6xl leading-none text-golden/30 font-serif select-none">"</span>
+                            <span className="text-6xl leading-none text-golden/70 font-serif select-none">"</span>
                         </div>
 
                         {/* Sliding quote */}
@@ -764,107 +787,128 @@ export default function Body() {
         </section>
 
         {/* CONTACTO */}
-        <section id="contacto" className="bg-stone-400/50 py-24">
-            <div className="container mx-auto px-6">
+        <section id="contacto" className="bg-[#f7f5f3] py-24">
+            <div className="max-w-7xl mx-auto px-6">
 
-                {/* Header */}
-                <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-16">
-                    <div>
-                        <p className="text-golden text-xs font-bold uppercase tracking-[0.3em] mb-3">
-                            Fale Connosco
-                        </p>
-                        <h2 className="text-4xl sm:text-5xl md:text-6xl font-black uppercase tracking-tighter text-zinc-900">
-                            Entre em Contacto
-                        </h2>
-                    </div>
+                <div className="mb-16">
+                    <p className="uppercase tracking-[6px] text-golden text-sm font-semibold">
+                        Fale Connosco
+                    </p>
+
+                    <h2 className="mt-4 text-5xl lg:text-6xl font-black text-black uppercase">
+                        Entre em Contacto
+                    </h2>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start" >
+                <div className="grid lg:grid-cols-2 gap-16">
 
-                    {/* Left — Contact Info */}
-                    <div className="space-y-8 lg:pr-32 pb-8 lg:pb-0">
-                        <div className="divide-y divide-zinc-400/50">
-                            {contactDetails.map((item, i) => (
-                                <div key={i} className="flex items-start gap-5 py-5 first:pt-0">
-                                    <div className="w-10 h-10 border border-zinc-400/50 flex items-center justify-center shrink-0">
-                                        {item.icon}
-                                    </div>
-                                    <div className="mt-1">
-                                        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 leading-none block">{item.label}</span>
-                                        <p className="text-zinc-800 text-sm mt-1 leading-relaxed">{item.value}</p>
+                    {/* Left */}
+                    <div className="space-y-6">
+                        {contacts.map((item, index) => {
+                            const Icon = item.icon;
+
+                            return (
+                                <div
+                                    key={index}
+                                    className="group bg-white p-6 shadow-sm hover:shadow-xl transition duration-300 border border-transparent hover:border-golden/40"
+                                >
+                                    <div className="flex gap-5">
+                                        <div className="w-14 h-14 rounded-full border border-golden flex items-center justify-center text-golden group-hover:bg-golden group-hover:text-white transition">
+                                            <Icon size={24} />
+                                        </div>
+
+                                        <div>
+                                            <p className="uppercase tracking-[3px] text-xs text-zinc-400 mb-2">
+                                                {item.title}
+                                            </p>
+
+                                            <div className="space-y-1 text-lg text-zinc-800">
+                                                {item.content}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            ))}
-                        </div>
+                            );
+                        })}
 
-                        {/* Social Links */}
-                        <div>
-                            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 block mb-6">
+                        {/* Social */}
+                        <div className="pt-6">
+                            <p className="uppercase tracking-[4px] text-xs text-zinc-400 mb-5">
                                 Redes Sociais
-                            </span>
-                            <div className="flex gap-3">
-                                {socialLinks.map((social, i) => (
+                            </p>
+
+                            <div className="flex gap-4">
+                                {socialLinks.map(({ icon: Icon, href, label }, index) => (
                                     <a
-                                        key={i}
-                                        href={social.href}
-                                        aria-label={social.label}
-                                        className="w-10 h-10 border border-zinc-400/50 flex items-center justify-center text-dark-golden/50 hover:bg-dark-golden hover:border-dark-golden hover:text-white transition-colors duration-200"
+                                        key={index}
+                                        href={href}
+                                        aria-label={label}
+                                        className="w-12 h-12 rounded-full bg-white shadow hover:bg-golden hover:text-white transition flex items-center justify-center"
                                     >
-                                        <social.icon className="w-4 h-4" />
+                                        <Icon size={18} />
                                     </a>
                                 ))}
                             </div>
                         </div>
                     </div>
 
-                    {/* Right — CTA Enhanced */}
-                    <motion.div
+                    {/* Right */}
+                    <div
                         initial={{ opacity: 0, x: 20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.5 }}
-                        className="lg:pl-16 pt-0"
+                        className="relative overflow-hidden bg-white shadow-2xl p-8 md:p-12 pb-0"
                     >
-                        <div className="relative bg-stone-300 border border-stone-300 p-8 md:p-10 shadow-lg overflow-hidden">
+                        
+                        <p className="uppercase tracking-[5px] text-golden text-sm font-semibold mb-4 relative z-10">
+                            Peca um orcamento
+                        </p>
 
+                        <h3 className="text-4xl md:text-5xl font-bold leading-tight mb-8 relative z-10 text-zinc-900">
+                            Pronto para comecar o seu projeto?
+                        </h3>
 
-                            {/* Watermark logo (kept but cleaner) */}
-                            <img
-                                src={SysloboLogo}
-                                alt=""
-                                aria-hidden="true"
-                                className="absolute bottom-5 right-1 md:bottom-10 md:right-10 h-32 w-32 md:h-44 md:w-44 object-contain pointer-events-none select-none"
-                            />
+                        <div className="space-y-5 text-lg mb-10 relative z-10 text-zinc-800">
+                            <div className="flex gap-3">
+                                <span className="text-golden">✓</span>
+                                <p>Acompanhamento personalizado</p>
+                            </div>
 
-                            <div className="relative z-10 flex flex-col">
+                            <div className="flex gap-3">
+                                <span className="text-golden">✓</span>
+                                <p>Resposta em menos de 24 horas</p>
+                            </div>
 
-                                <p className="text-golden text-xs font-bold uppercase tracking-[0.3em] mb-4">
-                                    Peça um Orçamento
-                                </p>
-
-                                <h3 className="text-3xl sm:text-4xl font-bold uppercase tracking-tight text-zinc-900 mb-4 leading-tight">
-                                    Pronto para começar o seu projeto?
-                                </h3>
-
-                                {/* Benefits */}
-                                <div className="space-y-2 mb-8 text-sm text-zinc-700">
-                                    <p>✔ Acompanhamento personalizado</p>
-                                    <p>✔ Resposta rápida</p>
-                                    <p>✔ Orçamento gratuito</p>
-                                </div>
-
-                                {/* Strong CTA button */}
-                                <a
-                                    href="/orcamento"
-                                    className="group inline-flex items-center justify-center gap-2 bg-zinc-900 hover:bg-golden px-4 py-3 sm:px-6 sm:py-4 font-bold text-xs sm:text-sm uppercase tracking-widest text-white hover:text-zinc-900 transition-all duration-300 shadow-md self-start"
-                                >
-                                    Pedir Orçamento
-                                    <HiArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
-                                </a>
-
+                            <div className="flex gap-3">
+                                <span className="text-golden">✓</span>
+                                <p>Orcamento totalmente gratuito</p>
                             </div>
                         </div>
-                    </motion.div>
+
+                        <Link
+                            to="/orcamento"
+                            className="group bg-black hover:bg-golden transition px-8 py-5 text-white rounded-lg font-semibold inline-flex items-center gap-3 relative z-10"
+                        >
+                            Pedir Orcamento
+
+                            <ArrowRight
+                                className="group-hover:translate-x-2 transition"
+                                size={20}
+                            />
+                        </Link>
+
+                        <div className="flex mt-12 ml-auto w-fit items-center cursor-default">
+                            <img
+                                src={SysloboLogo}
+                                alt="SYSLOBO Logo"
+                                className="w-16 h-16 sm:w-32 sm:h-32"
+                            />
+                            <span className="text-2xl sm:text-2xl font-semibold science-gothic text-black border-b-2 border-black">
+                                SYSLOBO
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>

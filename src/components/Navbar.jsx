@@ -69,11 +69,11 @@ export default function Navbar () {
             <Link to="/" className="flex items-center gap-2">
               <img
                 src={SysloboLogo}
-                alt=""
+                alt="SYSLOBO Logo"
                 className="w-16 h-16 sm:w-20 sm:h-20"
               />
-              <span className="text-2xl sm:text-3xl font-semibold text-black border-b border-golden/50">
-              Syslobo
+              <span className="text-2xl sm:text-2xl font-semibold science-gothic text-black border-b-2 border-black">
+              SYSLOBO
               </span>
             </Link>
           </div>

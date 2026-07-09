@@ -1,4 +1,4 @@
-import oficina from "@/assets/Home/Hero1.png"
+import FachadaHero from "@/assets/Home/FachadaHero.png"
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion"
 
@@ -7,8 +7,8 @@ export default function Hero() {
         <section className="relative min-h-screen flex items-center overflow-hidden">
             {/* Background image */}
             <img
-                src={oficina}
-                alt="Syslobo — Serralharia"
+                src={FachadaHero}
+                alt="Fachada"
                 className="absolute inset-0 w-full h-full object-cover"
             />
 
@@ -30,7 +30,7 @@ export default function Hero() {
                         transition={{ duration: 0.6, delay: 0.2 }}
                         className="inline-block text-xs font-bold uppercase tracking-[0.25em] text-golden mb-6 border-l-2 border-golden pl-3"
                     >
-                        Serralharia desde 1975
+                        Serralharia desde 1980
                     </motion.span>
 
                     {/* Headline */}
@@ -41,7 +41,7 @@ export default function Hero() {
 
                     {/* Subtitle */}
                     <p className="text-lg md:text-xl text-zinc-300 leading-relaxed mb-10 max-w-xl">
-                        Portas, janelas, portões, grades, fachadas e coberturas — tudo feito à medida, com a qualidade e rigor de mais de 50 anos de experiência.
+                        Portas, janelas, portões, grades, fachadas e coberturas — tudo feito à medida, com a qualidade e rigor de mais de 45 anos de experiência.
                     </p>
 
                     {/* CTAs */}
