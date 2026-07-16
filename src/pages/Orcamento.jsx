@@ -1,4 +1,3 @@
-
 import { useState } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
@@ -9,15 +8,6 @@ import { GoShieldCheck } from 'react-icons/go'
 import { GoClock } from 'react-icons/go'
 import { SlLocationPin } from 'react-icons/sl'
  
-const servicos = [
-    { value: "portas",     label: "Portas",     subtypes: ["Portas de Abrir", "Portas de Correr", "Portas de Enrolar", "Portas de Vaivém"] },
-    { value: "janelas",    label: "Janelas",    subtypes: ["Janelas de Abrir", "Janelas de Correr", "Janelas Fixas", "Janelas de Guilhotina"] },
-    { value: "portoes",    label: "Portões",    subtypes: ["Portão de Batente", "Portão de Correr", "Portão Automático"] },
-    { value: "grades",     label: "Grades",     subtypes: ["Grades Fixas", "Grades Amovíveis", "Grades com Porta"] },
-    { value: "fachadas",   label: "Fachadas",   subtypes: ["Fachada Ventilada", "Revestimento em Alumínio", "Fachada Compósita", "Fachada em Aço Corten"] },
-    { value: "coberturas", label: "Coberturas", subtypes: ["Marquise", "Pérgola", "Cobertura de Garagem", "Cobertura Industrial"] },
-    { value: "outro",      label: "Outro",      subtypes: [] },
-]
  
 const trustItems = [
   { icon: <GoShieldCheck className="w-5 h-5 text-dark-golden" />, title: "Gratuito e sem compromisso", desc: "Nenhum custo associado ao pedido de orçamento." },
@@ -33,17 +23,40 @@ const stepVariants = {
     exit:   { opacity: 0, x: -24 },
 }
  
+const toBase64 = (file) => new Promise((resolve, reject) => {
+  const reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = () => resolve({
+    name: file.name,
+    type: file.type,
+    content: reader.result.split(',')[1]
+  });
+  reader.onerror = error => reject(error);
+});
+
+async function sendEmail({ name, email, address, phone, description, attachments }) {
+  const res = await fetch('https://email-worker.miguelmanoalves.workers.dev/api/send-email', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, email, address, phone, description, attachments }),
+  });
+
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.error ?? 'Failed to send email');
+  }
+
+  return res.json();
+}
+
 export default function OrcamentoPage() {
     const [step, setStep] = useState(0)
     const [submitted, setSubmitted] = useState(false)
-    const [fileNames, setFileNames] = useState([])
-    const [collapsedServices, setCollapsedServices] = useState(new Set())
-    const [pendingDelete, setPendingDelete] = useState(null)
-    const [expandedItems, setExpandedItems] = useState(new Set())
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(null)
+    const [files, setFiles] = useState([])
 
     const [form, setForm] = useState({
-      services:      [],
-      serviceDetails: {},
       description:   '',
       name:          '',
       email:         '',
@@ -54,132 +67,31 @@ export default function OrcamentoPage() {
     const set = (field) => (e) => setForm(prev => ({ ...prev, [field]: e.target.value }))
     const setPhone = (e) => setForm(prev => ({ ...prev, phone: e.target.value.replace(/\D/g, '') }))
 
-    const toggleService = (value) => {
-      if (form.services.includes(value)) {
-        if (value === 'outro') {
-          setForm(prev => ({ ...prev, services: prev.services.filter(s => s !== value) }))
-        } else {
-          const detail = form.serviceDetails[value]
-          const hasDetails = detail?.items?.some(item => item.subType || item.width || item.height)
-          if (hasDetails) {
-            setCollapsedServices(prev => new Set([...prev, value]))
-            setPendingDelete({ type: 'service', svcValue: value })
-          } else {
-            removeService(value)
-          }
-        }
-      } else {
-        if (value === 'outro') {
-          setForm(prev => ({ ...prev, services: [...prev.services, value] }))
-        } else {
-          setForm(prev => {
-            const serviceDetails = { ...prev.serviceDetails }
-            serviceDetails[value] = { quantity: 1, items: [{ subType: '', width: '', height: '' }] }
-            return { ...prev, services: [...prev.services, value], serviceDetails }
-          })
-        }
-      }
-    }
-
-    const removeService = (svcValue) => {
-      setForm(prev => {
-        const services = prev.services.filter(s => s !== svcValue)
-        const serviceDetails = { ...prev.serviceDetails }
-        delete serviceDetails[svcValue]
-        return { ...prev, services, serviceDetails }
-      })
-      setCollapsedServices(prev => { const s = new Set(prev); s.delete(svcValue); return s })
-      setExpandedItems(prev => {
-        const next = new Set(prev)
-        for (const key of prev) { if (key.startsWith(`${svcValue}-`)) next.delete(key) }
-        return next
-      })
-    }
-
-    const removeItem = (svcValue, idx) => {
-      setForm(prev => {
-        const items = (prev.serviceDetails[svcValue]?.items || []).filter((_, i) => i !== idx)
-        return {
-          ...prev,
-          serviceDetails: {
-            ...prev.serviceDetails,
-            [svcValue]: { ...prev.serviceDetails[svcValue], quantity: items.length, items }
-          }
-        }
-      })
-      setExpandedItems(prev => { const s = new Set(prev); s.delete(`${svcValue}-${idx}`); return s })
-    }
-
-    const requestDeleteService = (svcValue) => setPendingDelete({ type: 'service', svcValue })
-    const requestDeleteItem    = (svcValue, idx) => setPendingDelete({ type: 'item', svcValue, idx })
-    const cancelDelete         = () => setPendingDelete(null)
-    const confirmDeleteAction  = () => {
-      if (!pendingDelete) return
-      if (pendingDelete.type === 'service') removeService(pendingDelete.svcValue)
-      else removeItem(pendingDelete.svcValue, pendingDelete.idx)
-      setPendingDelete(null)
-    }
-
-    const toggleItemExpand = (svcValue, idx) => {
-      const key = `${svcValue}-${idx}`
-      setExpandedItems(prev => {
-        const s = new Set(prev)
-        if (s.has(key)) s.delete(key); else s.add(key)
-        return s
-      })
-    }
-
-    const collapseService = (value) => setCollapsedServices(prev => new Set([...prev, value]))
-    const expandService  = (value) => setCollapsedServices(prev => { const s = new Set(prev); s.delete(value); return s })
-
-    const setQuantity = (svcValue) => (e) => {
-      const raw = e.target.value
-      setForm(prev => ({
-        ...prev,
-        serviceDetails: {
-          ...prev.serviceDetails,
-          [svcValue]: { ...prev.serviceDetails[svcValue], quantity: raw }
-        }
-      }))
-    }
-
-    const commitQuantity = (svcValue) => () => {
-      setForm(prev => {
-        const qty = Math.max(1, parseInt(prev.serviceDetails[svcValue]?.quantity) || 1)
-        const current = prev.serviceDetails[svcValue]?.items || []
-        const items = Array.from({ length: qty }, (_, i) => current[i] || { subType: '', width: '', height: '' })
-        return {
-          ...prev,
-          serviceDetails: {
-            ...prev.serviceDetails,
-            [svcValue]: { ...prev.serviceDetails[svcValue], quantity: qty, items }
-          }
-        }
-      })
-    }
-
-    const setItemDetail = (svcValue, index, field) => (eOrValue) => {
-      const val = typeof eOrValue === 'string' ? eOrValue : eOrValue.target.value
-      setForm(prev => {
-        const items = [...(prev.serviceDetails[svcValue]?.items || [])]
-        items[index] = { ...items[index], [field]: val }
-        return {
-          ...prev,
-          serviceDetails: {
-            ...prev.serviceDetails,
-            [svcValue]: { ...prev.serviceDetails[svcValue], items }
-          }
-        }
-      })
-    }
-
-    const step1Valid = form.description.trim().length > 0 || fileNames.length > 0
+    const step1Valid = form.description.trim().length > 0 || files.length > 0
     const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())
     const step2Valid = form.name.trim() && emailValid && form.phone.trim() && form.address.trim()
 
-    const handleSubmit = () => {
-        console.log('Form submitted:', form)
-        setSubmitted(true)
+    const handleSubmit = async () => {
+        setLoading(true)
+        setError(null)
+        try {
+          const attachments = await Promise.all(files.map(toBase64));
+
+          await sendEmail({
+            name: form.name,
+            email: form.email,
+            address: form.address,
+            phone: form.phone,
+            description: form.description,
+            attachments,
+          })
+          setSubmitted(true)
+        } catch (err) {
+          console.error('Error submitting form:', err)
+          setError(err.message || 'Falha ao enviar o email. Por favor, tente novamente.')
+        } finally {
+          setLoading(false)
+        }
     }
  
     const inputClass = "border-b border-stone-400 bg-transparent px-0 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 outline-none transition-colors focus:border-dark-golden w-full"
@@ -351,16 +263,16 @@ export default function OrcamentoPage() {
                       Fotografias ou esboço <span className="normal-case font-normal text-zinc-400/70">(opcional, mas recomendado)</span>
                     </label>
 
-                    {fileNames.length > 0 && (
+                    {files.length > 0 && (
                       <ul className="flex flex-col gap-1 mb-1">
-                        {fileNames.map((name, i) => (
+                        {files.map((file, i) => (
                           <li key={i} className="flex items-center justify-between px-3 py-2 bg-stone-100 border border-stone-400">
-                            <span className="text-xs text-zinc-700 truncate max-w-[80%]">{name}</span>
+                            <span className="text-xs text-zinc-700 truncate max-w-[80%]">{file.name}</span>
                             <button
                               type="button"
-                              onClick={() => setFileNames(prev => prev.filter((_, j) => j !== i))}
+                              onClick={() => setFiles(prev => prev.filter((_, j) => j !== i))}
                               className="text-zinc-400 hover:text-zinc-700 text-xs ml-2 cursor-pointer transition-colors duration-200"
-                              aria-label={`Remover ${name}`}
+                              aria-label={`Remover ${file.name}`}
                             >
                               ✕
                             </button>
@@ -371,17 +283,17 @@ export default function OrcamentoPage() {
 
                     <label className="flex items-center gap-3 border border-dashed border-stone-400 px-4 py-4 cursor-pointer hover:border-zinc-600 transition-colors duration-200 group">
                       <span className="text-xs text-zinc-400 group-hover:text-zinc-600 transition-colors duration-200">
-                        {fileNames.length > 0 ? "Clique para adicionar mais ficheiros" : "Clique para selecionar ficheiros"}
+                        {files.length > 0 ? "Clique para adicionar mais ficheiros" : "Clique para selecionar ficheiros"}
                       </span>
                       <input
                         type="file"
                         accept="image/*,.pdf"
                         multiple
                         className="hidden"
-                        onChange={(e) => setFileNames(prev => {
-                          const newNames = Array.from(e.target.files).map(f => f.name)
-                          const all = [...prev, ...newNames]
-                          return all.filter((name, i) => all.indexOf(name) === i)
+                        onChange={(e) => setFiles(prev => {
+                          const newFiles = Array.from(e.target.files)
+                          const all = [...prev, ...newFiles]
+                          return all.filter((file, i) => all.findIndex(f => f.name === file.name) === i)
                         })}
                       />
                     </label>
@@ -489,14 +401,14 @@ export default function OrcamentoPage() {
 
                           </div>
                         )}
-                        {fileNames.length > 0 && (
+                        {files.length > 0 && (
                           <div>
                             <p className="text-[10px] text-zinc-400 uppercase tracking-widest font-bold">
                               Ficheiros
                             </p>
 
                             <p className="text-sm text-zinc-700 mt-0.5">
-                              {fileNames.join(', ')}
+                              {files.map(f => f.name).join(', ')}
                             </p>
 
                           </div>
@@ -510,18 +422,26 @@ export default function OrcamentoPage() {
                     Ao submeter, autoriza o uso dos seus dados para contacto relacionado com este pedido de orçamento.
                   </p>
  
+                  {error && (
+                    <p className="text-red-500 text-xs mt-2">
+                      {error}
+                    </p>
+                  )}
+
                   <div className="flex items-center justify-between pt-2 border-t border-stone-300">
                     <button
                       onClick={() => setStep(1)}
-                      className="text-xs font-bold uppercase tracking-widest text-zinc-500 hover:text-zinc-800 transition-colors duration-200 cursor-pointer"
+                      disabled={loading}
+                      className="text-xs font-bold uppercase tracking-widest text-zinc-500 hover:text-zinc-800 transition-colors duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       ← Voltar
                     </button>
                     <button
                       onClick={handleSubmit}
-                      className="group inline-flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-zinc-900 hover:text-dark-golden transition-colors duration-300 cursor-pointer"
+                      disabled={loading}
+                      className="group inline-flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-zinc-900 hover:text-dark-golden transition-colors duration-300 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      Enviar pedido
+                      {loading ? 'A enviar...' : 'Enviar pedido'}
                       <span className="w-8 h-px bg-zinc-300 group-hover:w-14 group-hover:bg-dark-golden transition-all duration-300 inline-block" />
                     </button>
                   </div>
